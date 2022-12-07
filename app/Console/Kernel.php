@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
          })->name('send_message')->withoutOverlapping()->everyMinute();
 
         $schedule->call(function () {
-            Artisan::call('telat 2');
+            Artisan::call('telat 7');
          })->name('telat_7')->withoutOverlapping()->dailyAt('07:00');
 
     }
