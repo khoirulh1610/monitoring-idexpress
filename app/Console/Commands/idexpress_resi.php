@@ -92,15 +92,17 @@ class idexpress_resi extends Command
                             }
                             //  kirim notifikasi berdasarkan status                                   
                             try {
-                                $notif = new Message();
-                                // $notif->api_id = $temp_notif->api_id;
-                                $notif->phone = $cek_paket->recipient_phone;
-                                $notif->message = Wa::ReplaceArray($cek_paket,$temp_notif->copywriting);
-                                $notif->waybill_no = $cek_paket->waybill_no;
-                                $notif->operationType = $up['operationType'];
-                                $notif->status = 0;
-                                $notif->delay = rand($temp_notif->delay_min ?? 1,$temp_notif->delay_max?? 10);
-                                $notif->save();
+                                $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
+                                if($cek_paket){
+                                    $notif = new Message();                                
+                                    $notif->phone = $cek_paket->recipient_phone;
+                                    $notif->message = Wa::ReplaceArray($cek_paket,$temp_notif->copywriting);
+                                    $notif->waybill_no = $cek_paket->waybill_no;
+                                    $notif->operationType = $up['operationType'];
+                                    $notif->status = 0;
+                                    $notif->delay = rand($temp_notif->delay_min ?? 1,$temp_notif->delay_max?? 10);
+                                    $notif->save();
+                                }                                
                             } catch (\Throwable $th) {
                                 //throw $th;
                             }
