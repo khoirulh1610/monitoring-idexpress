@@ -27,16 +27,16 @@ class PaketController extends Controller
             $paket = Paket::where('operationType','10')->paginate(10);
         }
         if($request->filter_status=='Dalam Proses'){
-            $paket = Paket::where('operationType',['00','04','05','09'])->paginate(10);
+            $paket = Paket::whereIn('operationType',['00','04','05','09'])->paginate(10);
         }
         if($request->filter_status=='Gagal Kirim'){
-            $paket = Paket::where('operationType',['18','19'])->paginate(10);
+            $paket = Paket::whereIn('operationType',['18','19'])->paginate(10);
         }
         if($request->filter_status=='Dalam Proses Lebih Dari 3 Hari'){
-            $paket = Paket::where('operationType',['00','04','05','09'])->where('overdue','>',3)->paginate(10);
+            $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',3)->paginate(10);
         }
         if($request->filter_status=='Dalam Proses Lebih Dari 7 Hari'){
-            $paket = Paket::where('operationType',['00','04','05','09'])->where('overdue','>',7)->paginate(10);
+            $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',7)->paginate(10);
         }
         // $paket->paginate(10);
         return view('paket.index', compact('paket'));
