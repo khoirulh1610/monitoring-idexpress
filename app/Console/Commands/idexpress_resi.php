@@ -91,7 +91,7 @@ class idexpress_resi extends Command
                                 $notif->waybill_no = $cek_paket->waybill_no;
                                 $notif->operationType = $up['operationType'];
                                 $notif->status = 0;
-                                $notif->delay = rand(1,5);
+                                $notif->delay = rand($temp_notif->delay_min ?? 1,$temp_notif->delay_max?? 10);
                                 $notif->save();
                             } catch (\Throwable $th) {
                                 //throw $th;

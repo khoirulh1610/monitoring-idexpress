@@ -34,6 +34,7 @@ class NotifikasiJob implements ShouldQueue
      */
     public function handle()
     {
+        exit;
         $message = $this->message;
         if($message->phone && $message->message){
             $wa = Wa::send($message->api_id,['phone' => $message->phone, 'message' => $message->message]);

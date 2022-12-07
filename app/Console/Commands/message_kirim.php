@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Message;
 use App\Helpers\Wa;
+use App\Models\Apiwa;
 
 class message_kirim extends Command
 {
@@ -40,12 +41,26 @@ class message_kirim extends Command
     public function handle()
     {
         $Messages = Message::where('status', 0)->get();
-        foreach ($Messages as $message) {          
-            if($message->phone && $message->message){
-                $wa = Wa::send($message->api_id,['phone' => $message->phone, 'message' => $message->message]);
-                $res = json_decode($wa);
-                Message::where('id', $message->id)->update(['status' => 1,'report'=>$res->message]);          
-                sleep($message->delay);
+        foreach ($Messages as $message) {     
+            $apiwa = Apiwa::where('status', 1)->get();
+            foreach ($apiwa as $api) {
+                if($message->phone && $message->message){
+                    $wa = Wa::send($api->id,['phone' => $message->phone, 'message' => $message->message]);
+                    $res = json_decode($wa);
+                    $status = 0;
+                    if($res->message=='Terkirim'){
+                        $status = 1;
+                    }elseif ('Belum Terdafar') {
+                        $status = 2;
+                    }else{
+                        $status = 3;
+                    }
+                    if($res->message=='device offline'){
+                        Apiwa::where('id', $api->id)->update(['status' => 0]);
+                    }
+                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message]);          
+                    sleep($message->delay);
+                }
             }
         }        
     }

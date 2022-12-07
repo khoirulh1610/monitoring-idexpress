@@ -31,6 +31,7 @@ class CekresiJOb implements ShouldQueue
      */
     public function handle()
     {
+        exit;
         Artisan::call('cek:resi');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,8 +17,21 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('cek:resi')->everyFiveMinutes();
-        $schedule->command('idexpress:resi')->everyTwoMinutes();
-        $schedule->command('wa:status')->everyMinute();
+        // $schedule->command('idexpress:resi')->everyFiveMinutes()->withoutOverlapping();
+        // $schedule->command('wa:status')->everyMinute()->withoutOverlapping();
+        // $schedule->command('message:send')->everyMinute()->withoutOverlapping(10);
+
+        $schedule->call(function () {
+            Artisan::call('idexpress:resi');
+         })->name('idexpress_cek')->withoutOverlapping()->everyTenMinutes();
+        $schedule->call(function () {
+            Artisan::call('wa:status');
+         })->name('cek_status_wa')->withoutOverlapping()->everyFiveMinutes();
+
+        $schedule->call(function () {
+            Artisan::call('message:send');
+         })->name('send_message')->withoutOverlapping()->everyMinute();
+         
     }
 
     /**
