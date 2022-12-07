@@ -48,8 +48,10 @@ class telat extends Command
             $this->info($p->waybill_no);
             $api = Apiwa::where('status', 1)->inRandomOrder()->first();
             if($api){
-                $message = Wa::ReplaceArray($p, $temp_notif->messagecopywriting);
-                $wa = Wa::send($api->id,['phone' => $temp_notif->group_notif ?? '6285232843165', 'message' => $message]);
+                $message = Wa::ReplaceArray($p, $temp_notif->copywriting);                
+                $tujuan = explode(',', $temp_notif->target_notif);
+                foreach ($tujuan as $t) {
+                    $wa = Wa::send($api->id,['phone' => $t, 'message' => $message]);
                     $res = json_decode($wa);
                     $status = 0;
                     if($res->message=='Terkirim'){
@@ -62,6 +64,8 @@ class telat extends Command
                     if($res->message=='device offline'){
                         Apiwa::where('id', $api->id)->update(['status' => 0]);
                     }
+                    $this->info($wa);
+                }                
             }
         }
     }
