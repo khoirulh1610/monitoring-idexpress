@@ -133,7 +133,7 @@
 								<th class="text-center">Rp COD</th>
 								<th class="text-center">Overdue</th>
 								<th class="text-center">Status</th>
-								<th class="text-center">Note</th
+								<th class="text-center">Note</th>
 								<th class="text-center">Action</th>
 							</tr>
 						</thead>
