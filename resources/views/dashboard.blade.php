@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-6 col-sm-6 col-12">
+	<div class="col-xl-4 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+3+Hari&filter_from=&filter_to=')}}">
@@ -80,7 +80,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-6 col-sm-6 col-12">
+	<div class="col-xl-4 col-sm-6 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+7+Hari&filter_from=&filter_to=')}}">
@@ -100,6 +100,25 @@
 		</div>
 	</div>
 
+	<div class="col-xl-4 col-sm-6 col-12">
+		<div class="card card-two">
+			<div class="card-body">
+				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+7+Hari&filter_from=&filter_to=')}}">
+					<div class="dash-widget-header">
+						<span class="dash-widget-icon bg-3 bg-danger">
+							<i class="mdi mdi-database" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>
+						</span>
+						<div class="dash-count">
+							<div class="dash-title">Data Belum Cek Resi</div>
+							<div class="dash-counts">
+								<p>{{ number_format($belum_proses ?? 0) }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
 </div>
 
 
