@@ -31,7 +31,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Device</th>
+                                    <th class="text-center">Delay</th>
                                     <th class="text-center">Judul Notifikasi</th>
                                     <th class="text-center" style="width: 500px">Copywriting</th>
                                     <th class="text-center">Status</th>
@@ -44,7 +44,7 @@
                                         <td class="text-center">
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td class="text-center">{{ $notif->api_id }}</td>
+                                        <td class="text-center">{{ $notif->delay_min }}-{{ $notif->delay_max }}</td>
                                         <td>{{ $notif->name }}</td>
                                         <td class="truncated" style="width: 500px">{!! nl2br($notif->copywriting) !!}</td>
                                         <td class="text-center">
@@ -97,7 +97,7 @@
                                     <label for="recipient-name" class="col-form-label">Nama Notifikasi</label>
                                     <input type="text" class="form-control" id="nama-notifikasi" name="nama_notifikasi">
                                 </div>
-                                <div class="col-12 col-lg-4">
+                                <!-- <div class="col-12 col-lg-4">
                                     <label for="recipient-name" class="col-form-label">Device</label>
                                     <select name="device_notifikasi" id="device-notifikasi" class="form-control">
                                         @foreach ($device as $dev)
@@ -105,8 +105,8 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="col-12 col-lg-2">
+                                </div> -->
+                                <div class="col-12 col-lg-6">
                                     <label for="recipient-name" class="col-form-label">Status</label>
                                     <select name="status_notifikasi" id="status-notifikasi" class="form-control">
                                         <option value="0">Tidak Aktif</option>
@@ -116,14 +116,32 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Target Notif (Khusus Notif Lebih 7 Hari)</label>
+                            <input type="text" class="form-control" id="target_notif" name="target_notif">
+                        </div>
+                        <div class="mb-3">
                             <label for="message-text" class="col-form-label">Message</label>
-                            <textarea cols="20" rows="20" class="form-control" id="message-notifikasi" name="message_notifikasi"></textarea>
+                            <textarea cols="20" rows="20" class="form-control" id="message-notifikasi" name="message_notifikasi"></textarea>                            
                             <b>Parameter yang bisa digunakan : </b><br>
                             @foreach($keys as $k)
                                 [{{ $k }}] | 
                             @endforeach
                             [waktu]
                         </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <h6>Khusus Notifikasi Paket</h6>
+                                <div class="col-sm-6">
+                                    <label for="delay_min">Delay Random Min</label>
+                                    <input type="number" class="form-control" id="delay_min" name="delay_min">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="delay_max">Delay Random Max</label>
+                                    <input type="number" class="form-control" id="delay_max" name="delay_max">
+                                </div>
+                            </div>                            
+                        </div>                        
+                       
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -147,6 +165,9 @@
                     // $('#device-notifikasi').val(result.send_device)
                     $('#id-notifikasi').val(result.id)
                     $('#message-notifikasi').html(result.copywriting)
+                    $('#target_notif').val(result.target_notif);
+                    $('#delay_min').val(result.delay_min);
+                    $('#delay_max').val(result.delay_max);
                     $(`#status-notifikasi option[value=${result.status}]`).prop("selected", true)
                     $(`#device-notifikasi option[value=${result.send_device}]`).prop("selected", true)
                     $('#creditNotif').modal('show')

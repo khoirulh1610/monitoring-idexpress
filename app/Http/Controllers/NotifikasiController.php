@@ -39,6 +39,9 @@ class NotifikasiController extends Controller
         $notifikasi->api_id         = $request->device_notifikasi;
         $notifikasi->copywriting    = $request->message_notifikasi;
         $notifikasi->status         = $request->status_notifikasi;
+        $notifikasi->delay_min     = $request->delay_min;
+        $notifikasi->delay_max     = $request->delay_max;
+        $notifikasi->target_notif  = $request->target_notif;
         $notifikasi->save();
 
         return redirect('/setting/notifikasi');
