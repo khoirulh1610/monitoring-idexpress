@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Tracking;
 use App\Helpers\Wa;
 use App\Jobs\CekresiJOb;
+use App\Models\Apiwa;
 use App\Models\Notifikasi;
 use App\Models\Paket;
 use Carbon\Carbon;
@@ -138,7 +139,8 @@ class PaketController extends Controller
         if($paket){
             $template_notif = Notifikasi::where('name', 'update-status')->first();                 
             if($template_notif){
-                $kirim = Wa::send($template_notif->api_id,[
+                $apiwa = Apiwa::where('status',1)->first();
+                $kirim = Wa::send($apiwa->id,[
                     "phone" => $paket->recipient_phone,
                     "message" => Wa::ReplaceArray($paket,$template_notif->copywriting),
                 ]);                
