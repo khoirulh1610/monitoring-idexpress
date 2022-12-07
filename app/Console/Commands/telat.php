@@ -2,19 +2,20 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Message;
 use App\Helpers\Wa;
 use App\Models\Apiwa;
+use App\Models\Notifikasi;
+use App\Models\Paket;
+use Illuminate\Console\Command;
 
-class message_kirim extends Command
+class telat extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'message:send';
+    protected $signature = 'telat {overdue}';
 
     /**
      * The console command description.
@@ -40,12 +41,15 @@ class message_kirim extends Command
      */
     public function handle()
     {
-        $Messages = Message::where('status', 0)->get();
-        foreach ($Messages as $message) {     
+        $overdue = $this->argument('overdue');
+        $paket = Paket::where('operationType','<>', 10)->where('overdue','>',$overdue)->get();
+        $temp_notif = Notifikasi::where('name', 'on_proses_7')->first();
+        foreach ($paket as $p) {
+            $this->info($p->waybill_no);
             $api = Apiwa::where('status', 1)->inRandomOrder()->first();
             if($api){
-                if($message->phone && $message->message){
-                    $wa = Wa::send($api->id,['phone' => $message->phone, 'message' => $message->message]);
+                $message = Wa::ReplaceArray($p, $temp_notif->messagecopywriting);
+                $wa = Wa::send($api->id,['phone' => $temp_notif->group_notif ?? '6285232843165', 'message' => $message]);
                     $res = json_decode($wa);
                     $status = 0;
                     if($res->message=='Terkirim'){
@@ -58,10 +62,7 @@ class message_kirim extends Command
                     if($res->message=='device offline'){
                         Apiwa::where('id', $api->id)->update(['status' => 0]);
                     }
-                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message,'api_id'=>$api->id]);          
-                    sleep($message->delay);
-                }
             }
-        }        
+        }
     }
 }
