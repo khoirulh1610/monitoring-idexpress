@@ -105,7 +105,7 @@
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+7+Hari&filter_from=&filter_to=')}}">
 					<div class="dash-widget-header">
-						<span class="dash-widget-icon bg-3 bg-danger">
+						<span class="dash-widget-icon bg-3 bg-info">
 							<i class="mdi mdi-database" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>
 						</span>
 						<div class="dash-count">
