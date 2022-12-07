@@ -11,7 +11,7 @@ class DashboardController extends Controller
     {
         $delivered = Paket::where('operationType', '10')->count();
         $gagal = Paket::where('operationType', ['18','19'])->count();
-        $onprocess = Paket::all()->count()-$delivered-$gagal;
+        $onprocess = Paket::where('operationType',['00','04','05','09'])->count();
         $plus3 = Paket::where('operationType',['00','04','05','09'])->where('overdue','>',3)->count();
         $plus7 = Paket::where('operationType',['00','04','05','09'])->where('overdue','>',7)->count();
         $paket = Paket::take(10)->orderBy('id','desc')->get();
