@@ -85,7 +85,7 @@ class idexpress_resi extends Command
                             //  kirim notifikasi berdasarkan status                                   
                             try {
                                 $notif = new Message();
-                                $notif->api_id = $temp_notif->api_id;
+                                // $notif->api_id = $temp_notif->api_id;
                                 $notif->phone = $cek_paket->recipient_phone;
                                 $notif->message = Wa::ReplaceArray($cek_paket,$temp_notif->copywriting);
                                 $notif->waybill_no = $cek_paket->waybill_no;

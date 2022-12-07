@@ -58,7 +58,7 @@ class message_kirim extends Command
                     if($res->message=='device offline'){
                         Apiwa::where('id', $api->id)->update(['status' => 0]);
                     }
-                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message]);          
+                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message,'api_id'=>$api->id]);          
                     sleep($message->delay);
                 }
             }
