@@ -78,9 +78,9 @@ class idexpress_resi extends Command
                             $overdue = $interval->format('%a');
                             // end cek overdue
                             if ($up['operationType'] == '10') {
-                                Paket::where('id', $cek_paket->id)->update(['operationType' => $up['operationType'], 'pick_up_end_time' => $up['operationTime'],'waybill_status' => $waybill_status,'status'=>$status->note,'overdue'=>$overdue,'last_cek_at'=>Date('Y-m-d H:i:s')]);
+                                Paket::where('id', $cek_paket->id)->update(['operationType' => $up['operationType'],'pick_up_start_time'=>$dd['shippingTime'], 'pick_up_end_time' => $up['operationTime'],'waybill_status' => $waybill_status,'status'=>$status->note,'overdue'=>$overdue,'last_cek_at'=>Date('Y-m-d H:i:s')]);
                             } else {
-                                Paket::where('id', $cek_paket->id)->update(['operationType' => $up['operationType'],'waybill_status' => $waybill_status,'status'=>$status->note,'overdue'=>$overdue,'last_cek_at'=>Date('Y-m-d H:i:s')]);
+                                Paket::where('id', $cek_paket->id)->update(['operationType' => $up['operationType'],'pick_up_start_time'=>$dd['shippingTime'],'waybill_status' => $waybill_status,'status'=>$status->note,'overdue'=>$overdue,'last_cek_at'=>Date('Y-m-d H:i:s')]);
                             }
                             //  kirim notifikasi berdasarkan status                                   
                             try {

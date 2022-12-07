@@ -107,6 +107,7 @@
 								<th class="text-center">Pick Up</th>
 								<th class="text-center">Destination</th>
 								<th class="text-center">Recipient Name</th>
+								<th class="text-center">Rp. COD</th>
 								<th class="text-center">Overdue</th>
 								<th class="text-center">Status</th>
 								<th class="text-center">Note</th>
@@ -133,6 +134,7 @@
 									{{ $p->recipient_phone }}
 
 								</td>
+								<td>{{$p->rp_cod}}</td>
 								<td>
 									<?php																		
 									$overdue = $p->overdue .' Hari';// . ' Hari ' . $hours . ' Jam ';

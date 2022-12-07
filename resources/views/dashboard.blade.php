@@ -130,9 +130,10 @@
 								<th class="text-center">Pick Up</th>
 								<th class="text-center">Destination</th>
 								<th class="text-center">Recipient Name</th>
+								<th class="text-center">Rp COD</th>
 								<th class="text-center">Overdue</th>
 								<th class="text-center">Status</th>
-								<th>Note</th>
+								<th class="text-center">Note</th
 								<th class="text-center">Action</th>
 							</tr>
 						</thead>
@@ -156,17 +157,11 @@
 									{{ $p->recipient_phone }}
 
 								</td>
+								<td>{{$p->rp_cod}}</td>
 								<td>
-									<?php
-									$now = $p->pick_up_end_time ? new DateTime($p->pick_up_end_time) : new DateTime();
-									$overdue = new DateTime($p->pick_up_start_time);
-									$interval = $now->diff($overdue);
-									$days = $interval->format('%a');
-									$hours = $interval->format('%h');
-									$minutes = $interval->format('%i');
-									$seconds = $interval->format('%s');
-									$overdue = $days . ' Hari ' . $hours . ' Jam ';
-									$class_overdue = $days > 3 ? 'text-warning' : ($days > 7 ? 'text-danger' : '');
+									<?php																		
+									$overdue = $p->overdue .' Hari';// . ' Hari ' . $hours . ' Jam ';
+									$class_overdue = $p->overdue > 3 ? 'text-warning' : ($p->overdue > 7 ? 'text-danger' : '');
 									?>
 									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
 								</td>

@@ -111,6 +111,7 @@ class PaketController extends Controller
             $paket->service_type = $data['service_type'];
             // $paket->pick_up_start_time = $data['pick_up_start_time'] ?? null;
             // $paket->pick_up_end_time = $data['pick_up_end_time'] ?? null;
+
             $paket->destination = $data['destination'];
             $paket->standard_shipping_fee = $data['standard_shipping_fee'];
             $paket->insurance = $data['insurance'];
@@ -123,6 +124,7 @@ class PaketController extends Controller
             $paket->recipient_phone = $data['recipient_phone'];
             $paket->recipient_address = $data['recipient_address'];
             $paket->zip_code = $data['zip_code'];
+            $paket->rp_cod = 'Rp. '.number_format($data['cod_amount']);
             $paket->save();
         }
         // dispatch(new CekresiJOb());
