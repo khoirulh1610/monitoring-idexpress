@@ -84,6 +84,50 @@
   </div>
 
 
+  <div id="filter_inputs" class="card filter-card" style="display: none;">
+    <form action="?" method="get">
+      <div class="card-body pb-0">
+        <div class="row">
+
+          <div class="col-md-3" data-select2-id="6">
+            <div class="form-group" data-select2-id="5">
+              <label>Status:</label>
+              <select class="form-control" name="filter_status">
+                <option value="all">All / Semua</option>
+                <option value="terkirim">Terkirim</option>
+                <option value="pending">Pending</option>
+                <option value="gagal">Gagal Kirim</option>                
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>From</label>
+              <div class="cal-icon">
+                <input class="form-control datetimepicker" type="text" name="filter_from" value="{{\Request()->filter_from ?? ''}}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>To</label>
+              <div class="cal-icon">
+                <input class="form-control datetimepicker" format="Y-m-d" type="text" name="filter_to" value="{{\Request()->filter_to ?? ''}}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mt-2">
+            <div class="form-group">
+              <br>
+              <button type="submit" class="btn btn-success">Filter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
   <div class="col-sm-12">
     <div class="card card-two">
       <div class="card-header">
@@ -106,7 +150,7 @@
                 <th class="text-center">No</th>
                 <th class="text-center">Phone</th>
                 <th class="text-center">Message</th>
-                <th class="text-center">File</th>
+                <th class="text-center">Tanggal</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Action</th>
               </tr>
@@ -117,7 +161,7 @@
                 <td class="text-center">{{ $loop->iteration + ((int)(request()->input('page')??1)-1)*10}}</td>
                 <td class="text-center">{{ $p->phone }}</td>
                 <td><?php echo nl2br($p->message) ?></td>
-                <td>{{ $p->file ?? '-' }}</td>
+                <td>{{ $p->created_at ?? 'Updated_at' }}</td>
                 <td class="text-center">{{ $p->report ?? 'Pending' }}</td>
                 <td class="text-center">
                   <a id="del({{ $p->id }})" class="btn btn-danger btn-sm" onclick="hapus('{{ $p->id }}')"><i class="far fa-trash-alt me-2"></i>Delete</a>
