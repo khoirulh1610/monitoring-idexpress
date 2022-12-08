@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        
         $delivered = Paket::where('operationType', '10')->count();
         $gagal = Paket::whereIn('operationType', ['18','19'])->count();
         $onprocess = Paket::whereIn('operationType',['00','04','05','09'])->count();

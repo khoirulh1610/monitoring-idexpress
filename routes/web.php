@@ -3,6 +3,8 @@
 use App\Http\Controllers\NotifikasiController;
 use App\Models\Message;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,5 +52,15 @@ Route::middleware(['auth'])->group(function () {
         $message->message = 'test';
         $message->save();
         $notifikasijob = App\Jobs\NotifikasiJob::dispatch($message);
+    });
+    
+    Route::get('cek-resi',function (){
+        echo "ok";
+        Artisan::call('idexpress:resi');
+    });
+    
+    Route::get('cek-message',function (){
+        Artisan::call('message:send');
+        echo "ok";
     });
 });
