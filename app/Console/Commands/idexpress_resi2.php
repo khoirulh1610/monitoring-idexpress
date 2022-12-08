@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Http;
 use App\Models\IdexpressStatus;
 use Carbon\Carbon;
 
-class idexpress_resi extends Command
+class idexpress_resi2 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'idexpress:resi';
+    protected $signature = 'idexpress:resi2';
 
     /**
      * The console command description.
@@ -47,9 +47,8 @@ class idexpress_resi extends Command
      * @return int
      */
     public function handle()
-    {
-        // $paket = Paket::where('operationType_before', '<>', '10')->orWhereNull('operationType_before')->update(['operationType_before' => DB::raw('operationType')]);
-        $resi = Paket::where('operationType', '<>', '10')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(5))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
+    {        
+        $resi = Paket::whereNull('operationType')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(10))->pluck('waybill_no')->toArray();
         $this->info(count($resi)."==>".Carbon::now()->subMinute(10));
         if(count($resi)==0){
             exit;

@@ -23,7 +23,12 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             Artisan::call('idexpress:resi');
-         })->name('idexpress_cek')->withoutOverlapping()->everyTenMinutes();
+        })->name('idexpress_cek')->withoutOverlapping()->everyTenMinutes();
+
+        $schedule->call(function () {
+            Artisan::call('idexpress:resi');
+        })->name('idexpress_cek')->withoutOverlapping()->everyThirtyMinutes();
+
         $schedule->call(function () {
             Artisan::call('wa:status');
          })->name('cek_status_wa')->withoutOverlapping()->everyFiveMinutes();
