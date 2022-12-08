@@ -72,6 +72,10 @@ class idexpress_resi extends Command
                     if($cek_paket){
                         if($cek_paket->operationType!=$up['operationType']){
                             $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
+                            if(!$status){
+                                Wa::send(1,['phone'=>'6285232843165','messahe'=>'Status tidak ditemukan '.$up['operationType'].'Pada Resi :'.$dd['waybillNo']]);
+                                exit;
+                            }
                             $col = $status->col ?? 'operationType';                                                 
                             $waybill_status = str_replace(['<b>','</b>','<b class="text-danger">'], "", $status->description).' '. $up[$col]; 
                             // Hitung overdue
