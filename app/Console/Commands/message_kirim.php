@@ -44,13 +44,13 @@ class message_kirim extends Command
     public function handle()
     {
         $logcom = LogCommand::where('command','message:send')->first();
-        if($logcom){
-            if($logcom->next_run_at){
-                if($logcom->next_run_at > Carbon::now()){
-                    exit;
-                }
-            }
-        }
+        // if($logcom){
+        //     if($logcom->next_run_at){
+        //         if($logcom->next_run_at > Carbon::now()){
+        //             exit;
+        //         }
+        //     }
+        // }
         
         
         $cek_jeda = Message::where('status', 1)->orderBy('next_run_at','desc')->first();
