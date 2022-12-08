@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
         })->name('idexpress_cek')->withoutOverlapping()->everyTenMinutes();
 
         $schedule->call(function () {
-            Artisan::call('idexpress:resi');
+            Artisan::call('idexpress:resi2');
         })->name('idexpress_cek')->withoutOverlapping()->everyThirtyMinutes();
 
         $schedule->call(function () {
