@@ -73,6 +73,6 @@ class message_kirim extends Command
                 }
             }
         }   
-        exit;     
+        
     }
 }
