@@ -101,7 +101,7 @@
 												    <span class="noti-title">{{$pk->waybill_no}}</span> 
 												    {!!$pk->waybill_status!!}
 												</p>
-												<p class="noti-time"><span class="notification-time">{{$pk->pick_up_end_time}}</span></p>
+												<p class="noti-time"><span class="notification-time">{{$pk->pick_up_end_time ?? $pk->last_cek_at}}</span></p>
 											</div>
 										</div>
 									</a>
