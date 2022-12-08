@@ -89,7 +89,7 @@
 						</div>
 						<div class="noti-content">
 							<ul class="notification-list">
-								@foreach($paketgagal as $pk)
+							    @foreach($paketgagal as $pk)
 								<li class="notification-message">
 									<a href="{{url('paket/show/'.$pk->id)}}">
 										<div class="media d-flex">
@@ -98,8 +98,8 @@
 											<!--</span>-->
 											<div class="media-body">
 												<p class="noti-details">
-													<span class="noti-title">{{$pk->waybill_no}}</span>
-													{!!$pk->waybill_status!!}
+												    <span class="noti-title">{{$pk->waybill_no}}</span> 
+												    {!! str_replace('','',$pk->waybill_status)!!}
 												</p>
 												<p class="noti-time"><span class="notification-time">{{$pk->pick_up_end_time ?? $pk->last_cek_at}}</span></p>
 											</div>
@@ -179,22 +179,6 @@
 		<!-- Page Wrapper -->
 		<div class="page-wrapper">
 			<div class="content container-fluid">
-				@if (\Session::has('success'))
-				<div class="alert alert-success">
-					<ul>
-						<li>{!! \Session::get('success') !!}</li>
-					</ul>
-				</div>
-				@endif
-
-				@if (\Session::has('error'))
-				<div class="alert alert-danger">
-					<ul>
-						<li>{!! \Session::get('error') !!}</li>
-					</ul>
-				</div>
-				@endif
-
 				@yield('content')
 			</div>
 		</div>

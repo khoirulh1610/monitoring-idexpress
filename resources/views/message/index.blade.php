@@ -52,9 +52,9 @@
               <td class="text-center">{{ $p->phone }}</td>
               <td><?php echo wordwrap($p->message,40,"<br>") ?></td>
               <td>{{ $p->file ?? '-' }}</td>
-              <td class="text-center">{{ $p->report ?? 'Draft' }}</td>
+              <td class="text-center">{{ $p->report ?? 'Pending' }}</td>
               <td class="text-center">
-                  <a id="del{{ $p->id }}" class="btn btn-danger btn-sm" onclick="hapus({{ $p->id }})"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                  <a id="del({{ $p->id }})" class="btn btn-danger btn-sm" onclick="hapus('{{ $p->id }}')"><i class="far fa-trash-alt me-2"></i>Delete</a>
               </td>
             </tr>
             @endforeach
