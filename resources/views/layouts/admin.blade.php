@@ -97,15 +97,16 @@
 											<!--	<img class="avatar-img rounded-circle" alt="" src="/assets/img/profiles/avatar-02.jpg">-->
 											<!--</span>-->
 											<div class="media-body">
-												<p class="noti-details"><span class="noti-title">{{$pk->waybill_no}}</span>{!!$pk->waybill_status!!}</p>
+												<p class="noti-details">
+												    <span class="noti-title">{{$pk->waybill_no}}</span> 
+												    {!!$pk->waybill_status!!}
+												</p>
 												<p class="noti-time"><span class="notification-time">{{$pk->pick_up_end_time}}</span></p>
 											</div>
 										</div>
 									</a>
 								</li>
 								@endforeach
-								
-								
 							</ul>
 						</div>
 						<div class="topnav-dropdown-footer">
