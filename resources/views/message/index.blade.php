@@ -50,7 +50,7 @@
             <tr id="{{ $p->id }}">
               <td class="text-center">{{ $loop->iteration + ((int)(request()->input('page')??1)-1)*10}}</td>
               <td class="text-center">{{ $p->phone }}</td>
-              <td><?php echo wordwrap($p->message,40,"<br>") ?></td>
+              <td><?php echo nl2br($p->message) ?></td>
               <td>{{ $p->file ?? '-' }}</td>
               <td class="text-center">{{ $p->report ?? 'Pending' }}</td>
               <td class="text-center">
