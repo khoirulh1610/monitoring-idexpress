@@ -39,6 +39,9 @@ class PaketController extends Controller
         if($request->filter_status=='Dalam Proses Lebih Dari 7 Hari'){
             $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',7)->paginate(10);
         }
+        if($request->filter_status=='belum_cek'){
+            $paket = Paket::whereNull('operationType')->paginate(10);
+        }
         // $paket->paginate(10);
         return view('paket.index', compact('paket'));
     }
@@ -132,7 +135,7 @@ class PaketController extends Controller
         return redirect()->route('paket')->with('success', 'Data berhasil diupload');
     }
 
-    
+
     public function resendNotif($id)    
     {
         $paket = Paket::find($id);

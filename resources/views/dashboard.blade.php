@@ -103,7 +103,7 @@
 	<div class="col-xl-4 col-sm-6 col-12">
 		<div class="card card-two">
 			<div class="card-body">
-				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+7+Hari&filter_from=&filter_to=')}}">
+				<a href="{{url('paket?filter_status=belum_cek&filter_from=&filter_to=')}}">
 					<div class="dash-widget-header">
 						<span class="dash-widget-icon bg-3 bg-info">
 							<i class="mdi mdi-database" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>

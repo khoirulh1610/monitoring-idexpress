@@ -144,7 +144,7 @@
 								</td>
 								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
 								</td>
-								<td>{{$p->waybill_status}}</td>
+								<td>{{$p->waybill_status ?? 'Data Expedisi Belum ADA'}}</td>
 								<td class="text-center">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
