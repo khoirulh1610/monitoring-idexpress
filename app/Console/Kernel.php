@@ -20,12 +20,12 @@ class Kernel extends ConsoleKernel
         // $schedule->command('cek:resi')->everyFiveMinutes();
         // $schedule->command('idexpress:resi')->everyFiveMinutes()->withoutOverlapping();
         // $schedule->command('wa:status')->everyMinute()->withoutOverlapping();
-        // $schedule->command('message:send')->everyMinute()->withoutOverlapping(10);
+        $schedule->command('message:send')->everyMinute();
 
-        $schedule->call(function () {
-            Artisan::call('message:send');
-            Log::info('message:send runing at '.date('Y-m-d H:i:s'));
-         })->name('send_message')->withoutOverlapping()->everyThreeMinutes();
+        // $schedule->call(function () {
+        //     Artisan::call('message:send');            
+        //  })->name('send_message')->withoutOverlapping()->everyThreeMinutes();
+
         $schedule->call(function () {
             Artisan::call('idexpress:resi');
             Log::info('idexpress:resi runing at '.date('Y-m-d H:i:s'));
@@ -39,9 +39,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Artisan::call('wa:status');
             Log::info('wa:status runing at '.date('Y-m-d H:i:s'));
-         })->name('cek_status_wa')->withoutOverlapping()->everyFiveMinutes();
-
-        
+         })->name('cek_status_wa')->withoutOverlapping()->everyFiveMinutes();      
 
         $schedule->call(function () {
             Artisan::call('telat 7');

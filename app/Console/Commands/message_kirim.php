@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Message;
 use App\Helpers\Wa;
 use App\Models\Apiwa;
+use Illuminate\Support\Facades\Log;
 
 class message_kirim extends Command
 {
@@ -40,6 +41,14 @@ class message_kirim extends Command
      */
     public function handle()
     {
+        $cek_jeda = Message::where('status', 1)->orderBy('next_run_at','desc')->first();
+        if($cek_jeda){
+            $this->info($cek_jeda->next_run_at);
+            if($cek_jeda->next_run_at > date('Y-m-d H:i:s')){
+                exit;
+            }
+        }
+        Log::info('message:send runing at '.date('Y-m-d H:i:s'));
         $Messages = Message::where('status', 0)->get();
         foreach ($Messages as $message) {     
             $api = Apiwa::where('status', 1)->inRandomOrder()->first();
@@ -59,10 +68,11 @@ class message_kirim extends Command
                         $status = 0;
                         Apiwa::where('id', $api->id)->update(['status' => 0]);
                     }
-                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message,'api_id'=>$api->id]);          
+                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message,'api_id'=>$api->id,'next_run_at'=>date('Y-m-d H:i:s', strtotime('+'.($message->delay+60).' seconds'))]);          
                     sleep($message->delay);
                 }
             }
-        }        
+        }   
+        exit;     
     }
 }
