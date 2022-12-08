@@ -144,7 +144,7 @@
 								</td>
 								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
 								</td>
-								<td>{{$p->waybill_status ?? 'Data Expedisi Belum ADA'}}</td>
+								<td>{!! $p->waybill_status.'<br><small class="text-info"> Terakhir cek : '.$p->last_cek_at.'</small>' ?? 'Data Expedisi Belum ADA<br>Terakhir cek : <small class="text-info"> Terakhir cek : '.$p->last_cek_at.'</small>' !!}</td>
 								<td class="text-center">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
