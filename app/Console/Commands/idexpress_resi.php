@@ -73,7 +73,7 @@ class idexpress_resi extends Command
                         if($cek_paket->operationType!=$up['operationType']){
                             $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
                             if(!$status){
-                                Wa::send(1,['phone'=>'6285232843165','messahe'=>'Status tidak ditemukan '.$up['operationType'].'Pada Resi :'.$dd['waybillNo']]);
+                                Wa::send(1,['phone'=>'6285232843165','message'=>'Status tidak ditemukan '.$up['operationType'].'Pada Resi :'.$dd['waybillNo']]);
                                 exit;
                             }
                             $col = $status->col ?? 'operationType';                                                 
