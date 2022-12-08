@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Helpers\Wa;
 use App\Models\Apiwa;
+use App\Models\LogCommand;
 use App\Models\Notifikasi;
 use App\Models\Paket;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class telat extends Command
@@ -41,6 +43,17 @@ class telat extends Command
      */
     public function handle()
     {
+        $logcom = LogCommand::where('command','telat 7')->first();
+        if($logcom){
+            if($logcom->next_run_at){
+                if($logcom->next_run_at > Carbon::now()){
+                    exit;
+                }
+            }
+        }
+        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
+        $logcom->save();
+        
         $overdue = $this->argument('overdue');
         $paket = Paket::where('operationType','<>', 10)->where('overdue','>',$overdue)->get();
         $temp_notif = Notifikasi::where('name', 'on_proses_7')->first();

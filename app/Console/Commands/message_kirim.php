@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Models\Message;
 use App\Helpers\Wa;
 use App\Models\Apiwa;
+use App\Models\LogCommand;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class message_kirim extends Command
@@ -41,6 +43,16 @@ class message_kirim extends Command
      */
     public function handle()
     {
+        $logcom = LogCommand::where('command','message:send')->first();
+        if($logcom){
+            if($logcom->next_run_at){
+                if($logcom->next_run_at > Carbon::now()){
+                    exit;
+                }
+            }
+        }
+        
+        
         $cek_jeda = Message::where('status', 1)->orderBy('next_run_at','desc')->first();
         if($cek_jeda){
             $this->info($cek_jeda->next_run_at);
@@ -48,7 +60,7 @@ class message_kirim extends Command
                 exit;
             }
         }
-        Log::info('message:send runing at '.date('Y-m-d H:i:s'));
+        // Log::info('message:send runing at '.date('Y-m-d H:i:s'));
         $Messages = Message::where('status', 0)->get();
         foreach ($Messages as $message) {     
             $api = Apiwa::where('status', 1)->inRandomOrder()->first();
@@ -73,6 +85,7 @@ class message_kirim extends Command
                 }
             }
         }   
-        
+        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
+        $logcom->save();
     }
 }

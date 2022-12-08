@@ -13,6 +13,7 @@ use App\Models\PaketsLogTracking;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\IdexpressStatus;
+use App\Models\LogCommand;
 use Carbon\Carbon;
 
 class idexpress_resi2 extends Command
@@ -48,6 +49,15 @@ class idexpress_resi2 extends Command
      */
     public function handle()
     {        
+        $logcom = LogCommand::where('command','idexpress:resi2')->first();
+        if($logcom){
+            if($logcom->next_run_at){
+                if($logcom->next_run_at > Carbon::now()){
+                    exit;
+                }
+            }
+        }
+        
         $resi = Paket::whereNull('operationType')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(10))->pluck('waybill_no')->toArray();
         $this->info(count($resi)."==>".Carbon::now()->subMinute(10));
         if(count($resi)==0){
@@ -122,6 +132,8 @@ class idexpress_resi2 extends Command
             }
         }
         self::handle();
+        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
+        $logcom->save();
     }
     
 }

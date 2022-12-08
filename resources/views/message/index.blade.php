@@ -2,6 +2,67 @@
 
 @section('content')
 <div class="row">
+	<div class="col-xl-4 col-sm-6 col-12">
+		<div class="card card-two">
+			<div class="card-body">
+				<a href="{{url('message?filter_status=terkirim&filter_from=&filter_to=')}}">
+					<div class="dash-widget-header">
+						<span class="dash-widget-icon bg-1 bg-three">
+							<i class="mdi mdi-airplane-landing" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-airplane-landing" aria-label="mdi-airplane-landing"></i>
+						</span>
+						<div class="dash-count">
+							<div class="dash-title">Terkirim</div>
+							<div class="dash-counts">
+								<p>{{ number_format($terkirim ?? 0) }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-4 col-sm-6 col-12">
+		<div class="card card-two">
+			<div class="card-body">
+				<a href="{{url('message?filter_status=pending&filter_from=&filter_to=')}}">
+					<div class="dash-widget-header">
+						<span class="dash-widget-icon bg-2 bg-two">
+							<i class="mdi mdi-airplane-takeoff" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-airplane-takeoff" aria-label="mdi-airplane-takeoff"></i>
+						</span>
+						<div class="dash-count">
+							<div class="dash-title">Pending</div>
+							<div class="dash-counts">
+								<p>{{ number_format($pending ?? 0) }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-4 col-sm-6 col-12">
+		<div class="card card-two">
+			<div class="card-body">
+				<a href="{{url('message?filter_status=gagal&filter_from=&filter_to=')}}">
+					<div class="dash-widget-header">
+						<span class="dash-widget-icon bg-3 bg-one">
+							<i class="mdi mdi-airplane-off" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-airplane-off" aria-label="mdi-airplane-off"></i>
+						</span>
+						<div class="dash-count">
+							<div class="dash-title">Gagal Kirim</div>
+							<div class="dash-counts">
+								<p>{{ number_format($gagal ?? 0) }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">

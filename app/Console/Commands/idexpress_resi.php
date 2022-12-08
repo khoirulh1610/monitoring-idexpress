@@ -13,6 +13,7 @@ use App\Models\PaketsLogTracking;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\IdexpressStatus;
+use App\Models\LogCommand;
 use Carbon\Carbon;
 
 class idexpress_resi extends Command
@@ -48,11 +49,34 @@ class idexpress_resi extends Command
      */
     public function handle()
     {
-        // $paket = Paket::where('operationType_before', '<>', '10')->orWhereNull('operationType_before')->update(['operationType_before' => DB::raw('operationType')]);
+        $logcom = LogCommand::where('command','idexpress:resi')->first();
+        if($logcom){
+            if($logcom->next_run_at){
+                if($logcom->next_run_at > Carbon::now()){           
+                    $this->info("Skip");         
+                    exit;
+                }
+            }
+            if($logcom->status==1){
+                $this->info("Skip already running");         
+                exit;
+            }
+        }                
+        $logcom->status = 1;
+        $logcom->save();
+
+        self::proses(); 
+        $this->info("Done");
+        $logcom->status = 0;
+        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
+        $logcom->save();
+    }
+    
+    function proses(){
         $resi = Paket::where('operationType', '<>', '10')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(5))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
         $this->info(count($resi)."==>".Carbon::now()->subMinute(10));
         if(count($resi)==0){
-            exit;
+            return false;
         }
         $all_Resi = implode(",",$resi);        
         $cek = Tracking::idexpress($all_Resi);
@@ -122,7 +146,6 @@ class idexpress_resi extends Command
                 
             }
         }
-        self::handle();
+        self::proses();
     }
-    
 }

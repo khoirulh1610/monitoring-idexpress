@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Helpers\Wa;
 use App\Models\Apiwa;
+use App\Models\LogCommand;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class wa_status extends Command
@@ -39,6 +41,16 @@ class wa_status extends Command
      */
     public function handle()
     {
+        $logcom = LogCommand::where('command','wa:status')->first();
+        if($logcom){
+            if($logcom->next_run_at){
+                if($logcom->next_run_at > Carbon::now()){
+                    exit;
+                }
+            }
+        }
+        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
+        $logcom->save();
         $apiwa = Apiwa::where('name', 'Tokalink')->get();
         foreach ($apiwa as $api) {
             if($api->name=='Tokalink'){
