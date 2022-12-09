@@ -67,7 +67,10 @@ class PaketController extends Controller
                 }
                 return view('paket.show', compact('paket','data'));
             }else{
-                return redirect()->back()->with('error', 'Data tidak ditemukan');
+                $paket->waybill_status = 'Resi Tidak ditemukan';
+                $paket->last_cek_at = Carbon::now(); 
+                $paket->save();
+                return redirect()->back()->with('error', 'Resi tidak ditemukan');
             }            
         }
         return redirect()->back();
