@@ -154,4 +154,13 @@ class PaketController extends Controller
         }
         return redirect()->back();
     }
+
+    public function delete($id)
+    {
+        $paket = Paket::find($id);
+        if($paket){
+            $paket->delete();
+        }
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
 }

@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paket/upload', 'PaketController@upload');
     Route::post('/paket/upload', 'PaketController@doupload');
     Route::get('/paket/resend-notif/{id}', 'PaketController@resendNotif');
+    Route::get('/paket/delete/{id}', 'PaketController@delete');
 
     Route::get('setting/notifikasi', 'NotifikasiController@index')->name('notifikasi');
     Route::get('setting/notifikasi/credit', 'NotifikasiController@credit')->name('notifikasi.credit');
