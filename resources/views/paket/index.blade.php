@@ -148,8 +148,6 @@
 									{{ $p->recipient_phone }}
 
 								</td>
-								
-								
 								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
 								</td>
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
