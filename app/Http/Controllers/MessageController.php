@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class MessageController extends Controller
 {
     public function index(Request $request){
-        $data = Message::paginate(10)->orderBy('id','desc');
+        $data = Message::orderBy('id','desc')->paginate(10);
         $terkirim = Message::where('status',1)->count();
         $gagal = Message::where('status',2)->count();
         $pending = Message::where('status',0)->count();
