@@ -141,7 +141,7 @@ class idexpress_resi extends Command
                     
                 }else{
                     $this->info('Belum Data '.$dd['waybillNo']."\n");
-                    Paket::where('waybill_no',$dd['waybillNo'])->update(['status'=>'Tidak ditemukan','last_cek_at'=>Date('Y-m-d H:i:s')]);
+                    Paket::where('waybill_no',$dd['waybillNo'])->update(['status'=>'TIDAK VALID','operationType'=>'xx','last_cek_at'=>Date('Y-m-d H:i:s')]);
                 }
                 
             }
