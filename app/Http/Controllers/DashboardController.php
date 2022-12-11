@@ -16,8 +16,8 @@ class DashboardController extends Controller
         $plus3 = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',3)->count();
         $plus7 = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',7)->count();
         $paket = Paket::take(10)->orderBy('last_cek_at','desc')->get();
-        $tidak_balid = Paket::whereIn('operationType',['xx'])->count();
+        $tidak_valid = Paket::whereIn('operationType',['xx'])->count();
         $belum_proses = Paket::whereNull('operationType')->count();
-        return view('dashboard', compact('delivered', 'onprocess', 'gagal','paket','plus3','plus7','belum_proses','tidak_balid'));
+        return view('dashboard', compact('delivered', 'onprocess', 'gagal','paket','plus3','plus7','belum_proses','tidak_valid'));
     }
 }
