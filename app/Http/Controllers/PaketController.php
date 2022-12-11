@@ -47,6 +47,10 @@ class PaketController extends Controller
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);
             $qpaket .= " and operationType in ('00','04','05','09') and overdue > 7";
         }
+        if($request->filter_status=='tidak_valid'){
+            // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);
+            $qpaket .= " and operationType in ('xx')";
+        }
         if($request->filter_status=='belum_cek'){
             // $paket->whereNull('operationType');
             $qpaket .= " and operationType is null";
@@ -82,10 +86,11 @@ class PaketController extends Controller
                 }
                 return view('paket.show', compact('paket','data'));
             }else{
-                $paket->waybill_status = 'Resi Tidak ditemukan';
+                $paket->waybill_status = 'TIDAK VALID';
+                $paket->operationType = 'xx';
                 $paket->last_cek_at = Carbon::now(); 
                 $paket->save();
-                return redirect()->back()->with('error', 'Resi tidak ditemukan');
+                return redirect()->back()->with('error', 'TIDAK VALID');
             }            
         }
         return redirect()->back();

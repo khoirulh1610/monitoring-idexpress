@@ -38,6 +38,7 @@
 								<option value="Gagal Kirim">Gagal Kirim</option>
 								<option value="Dalam Proses Lebih Dari 3 Hari">Dalam Proses Lebih Dari 3 Hari</option>
 								<option value="Dalam Proses Lebih Dari 7 Hari">Dalam Proses Lebih Dari 7 Hari</option>
+								<option value="tidak_valid">Tidak Valid</option>
 							</select>
 						</div>
 					</div>
