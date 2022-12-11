@@ -68,7 +68,7 @@ class telat extends Command
                     $logmsg = new Message();
                     $logmsg->message = $message;
                     $logmsg->phone = $t;
-                    $logmsg->apiwa_id = $api->id;                    
+                    $logmsg->api_id = $api->id;                    
                     $wa = Wa::send($api->id,['phone' => $t, 'message' => $message]);
                     $res = json_decode($wa);
                     $status = 0;
