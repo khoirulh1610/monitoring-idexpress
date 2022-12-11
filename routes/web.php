@@ -64,4 +64,9 @@ Route::middleware(['auth'])->group(function () {
         Artisan::call('message:send');
         echo "ok";
     });
+
+    Route::get('telat',function (){
+        Artisan::call('telat 7');
+        echo "ok";
+    });
 });

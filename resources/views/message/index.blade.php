@@ -18,7 +18,7 @@
       </div>
       <div class="col-auto">
         <a class="btn btn-primary filter-btn" href="javascript:void(0);" id="filter_search">
-          <i class="fas fa-filter"></i>
+          <i class="fas fa-filter"></i> Filter
         </a>
       </div>
     </div>

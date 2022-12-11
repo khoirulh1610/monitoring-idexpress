@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-	<div class="col-xl-4 col-sm-6 col-12">
+	<div class="col-xl-2 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Delivered&filter_from=&filter_to=')}}">
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xl-4 col-sm-6 col-12">
+	<div class="col-xl-2 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses&filter_from=&filter_to=')}}">
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xl-4 col-sm-6 col-12">
+	<div class="col-xl-2 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Gagal+Kirim&filter_from=&filter_to=')}}">
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-4 col-sm-4 col-12">
+	<div class="col-xl-2 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+3+Hari&filter_from=&filter_to=')}}">
@@ -69,7 +69,7 @@
 							<i class="mdi mdi-alarm-check" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>
 						</span>
 						<div class="dash-count">
-							<div class="dash-title">Dalam Proses Lebih Dari 3 Hari</div>
+							<div class="dash-title">Proses 3D+</div>
 							<div class="dash-counts">
 								<p>{{ number_format($plus3 ?? 0) }}</p>
 							</div>
@@ -80,7 +80,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-4 col-sm-6 col-12">
+	<div class="col-xl-2 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+7+Hari&filter_from=&filter_to=')}}">
@@ -89,7 +89,7 @@
 							<i class="mdi mdi-alarm" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>
 						</span>
 						<div class="dash-count">
-							<div class="dash-title">Dalam Proses Lebih Dari 7 Hari</div>
+							<div class="dash-title">Proses 7D+</div>
 							<div class="dash-counts">
 								<p>{{ number_format($plus7 ?? 0) }}</p>
 							</div>
@@ -100,7 +100,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-4 col-sm-6 col-12">
+	<div class="col-xl-2 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=belum_cek&filter_from=&filter_to=')}}">
@@ -109,7 +109,7 @@
 							<i class="mdi mdi-database" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>
 						</span>
 						<div class="dash-count">
-							<div class="dash-title">Data Belum Cek Resi</div>
+							<div class="dash-title">Pending CEK</div>
 							<div class="dash-counts">
 								<p>{{ number_format($belum_proses ?? 0) }}</p>
 							</div>
@@ -140,20 +140,20 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-stripped" id="tabel-paket">
+					<table class="table table-stripped small" id="tabel-paket">
 						<thead class="thead-light">
 							<tr>
 								<th class="text-center">No</th>
-								<th class="text-center">Batch Order</th>
 								<th class="text-center">Waybill No</th>
-								<th class="text-center">Pick Up</th>
-								<th class="text-center">Destination</th>
 								<th class="text-center">Recipient Name</th>
-								<th class="text-center">Rp COD</th>
-								<th class="text-center">Overdue</th>
-								<th class="text-center">Status</th>
 								<th class="text-center">Note</th>
-								<th class="text-center">Action</th>
+								<th class="text-center">Status</th>
+								<th class="text-center">Action</th>								
+								<th class="text-center">Overdue</th>
+								<th class="text-center">Batch Order</th>
+								<th class="text-center">Destination</th>
+								<th class="text-center">Pick Up</th>
+								<th class="text-center">Rp COD</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -162,21 +162,28 @@
 								<td class="text-center">
 									{{ $loop->iteration }}
 								</td>
-								<td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td>
+								
 								<td>{{ $p->waybill_no }}</td>
-								<td>
-									Start Time : {{ $p->pick_up_start_time }} <br>
-									End Time : {{ $p->pick_up_end_time }} <br>
-								</td>
-								<td>
-									{{ $p->destination }}
-								</td>
 								<td>
 									{{ $p->recipient_name }} <br>
 									{{ $p->recipient_phone }}
 
 								</td>
-								<td>{{$p->rp_cod}}</td>
+								
+								
+								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
+								</td>
+								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
+								<td class="text-center">
+									<div class="dropdown dropdown-action">
+										<a href="#" class="btn btn-success btn-sm action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>
+										<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>View</a>
+											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
+											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
+										</div>
+									</div>
+								</td>
 								<td>
 									<?php																		
 									$overdue = $p->overdue .' Hari';// . ' Hari ' . $hours . ' Jam ';
@@ -184,19 +191,16 @@
 									?>
 									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
 								</td>
-								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
+								<td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td>
+								<td>
+									{{ $p->destination }}
 								</td>
-								<td>{{$p->waybill_status}}</td>
-								<td class="text-center">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>View</a>
-											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
-											<a class="dropdown-item" href="javascript:void(0);"><i class="far fa-trash-alt me-2"></i>Delete</a>
-										</div>
-									</div>
+								
+								<td>
+									Start Time : {{ $p->pick_up_start_time ? Date('d/m/y H:i',strtotime($p->pick_up_start_time)) : '' }} <br>
+									End Time : {{ $p->pick_up_end_time ? Date('d/m/y H:i',strtotime($p->pick_up_end_time)) : ''}} <br>
 								</td>
+								<td>{{$p->rp_cod}}</td>
 							</tr>
 							@endforeach
 						</tbody>

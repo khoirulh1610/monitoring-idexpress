@@ -16,7 +16,7 @@
 					<i class="fas fa-plus"></i>
 				</a> -->
 				<a class="btn btn-primary filter-btn" href="javascript:void(0);" id="filter_search">
-					<i class="fas fa-filter"></i>
+					<i class="fas fa-filter"></i> Filter
 				</a>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 			<div class="card-body pb-0">
 				<div class="row">
 
-					<div class="col-md-3" data-select2-id="6">
+					<div class="col-md-4" data-select2-id="6">
 						<div class="form-group" data-select2-id="5">
 							<label>Status:</label>
 							<select class="form-control" name="filter_status">
@@ -41,7 +41,25 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4" data-select2-id="6">
+						<div class="form-group" data-select2-id="5">
+							<label>Filter By :</label>
+							<select class="form-control" name="filter_by">
+								<option value="">All / Semua</option>
+								<option value="waybill_no">WaybillNo</option>
+								<option value="recipient_phone">Phone / HP</option>
+								<option value="recipient_name">Nama</option>								
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Kata Kunci </label>
+							<input class="form-control" type="text" name="keyword" value="{{\Request()->keyword ?? ''}}">
+						</div>
+					</div>
+
+					<div class="col-md-4">
 						<div class="form-group">
 							<label>From</label>
 							<div class="cal-icon">
@@ -49,7 +67,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label>To</label>
 							<div class="cal-icon">
@@ -84,8 +102,9 @@
 				</div>
 			</div>
 			<div class="card-body">
+			
 				<div class="mb-3">
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-auto">
 							<i class="fas fa-circle text-success me-1"></i> Delivered
 						</div>
@@ -95,46 +114,54 @@
 						<div class="col-auto">
 							<i class="fas fa-circle text-danger me-1"></i> Gagal Pengiriman
 						</div>
-					</div>
+					</div> -->
+					{{ $paket->appends(request()->input())->links('vendor.pagination.bootstrap-4')}}
 				</div>
 				<div class="table-responsive">
-					<table class="table table-stripped" id="tabel-paket">
+				<table class="table table-stripped small" id="tabel-paket">
 						<thead class="thead-light">
 							<tr>
 								<th class="text-center">No</th>
-								<th class="text-center">Batch Order</th>
 								<th class="text-center">Waybill No</th>
-								<th class="text-center">Pick Up</th>
-								<th class="text-center">Destination</th>
 								<th class="text-center">Recipient Name</th>
-								<th class="text-center">Rp. COD</th>
-								<th class="text-center">Overdue</th>
-								<th class="text-center">Status</th>
 								<th class="text-center">Note</th>
-								<th class="text-center">Action</th>
+								<th class="text-center">Status</th>
+								<th class="text-center">Action</th>								
+								<th class="text-center">Overdue</th>
+								<th class="text-center">Batch Order</th>
+								<th class="text-center">Destination</th>
+								<th class="text-center">Pick Up</th>
+								<th class="text-center">Rp COD</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach ($paket as $p)
 							<tr>
 								<td class="text-center">
-									{{ $loop->iteration + ((int)(request()->input('page')??1)-1)*10}}
+									{{ $loop->iteration }}
 								</td>
-								<td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td>
+								
 								<td>{{ $p->waybill_no }}</td>
-								<td>
-									Start Time : {{ $p->pick_up_start_time }} <br>
-									End Time : {{ $p->pick_up_end_time }} <br>
-								</td>
-								<td>
-									{{ $p->destination }}
-								</td>
 								<td>
 									{{ $p->recipient_name }} <br>
 									{{ $p->recipient_phone }}
 
 								</td>
-								<td>{{$p->rp_cod}}</td>
+								
+								
+								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
+								</td>
+								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
+								<td class="text-center">
+									<div class="dropdown dropdown-action">
+										<a href="#" class="btn btn-success btn-sm small action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>
+										<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>View</a>
+											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
+											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
+										</div>
+									</div>
+								</td>
 								<td>
 									<?php																		
 									$overdue = $p->overdue .' Hari';// . ' Hari ' . $hours . ' Jam ';
@@ -142,19 +169,16 @@
 									?>
 									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
 								</td>
-								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
+								<td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td>
+								<td>
+									{{ $p->destination }}
 								</td>
-								<td>{!! $p->waybill_status.'<br><small class="text-info"> Terakhir cek : '.$p->last_cek_at.'</small>' ?? 'Data Expedisi Belum ADA<br>Terakhir cek : <small class="text-info"> Terakhir cek : '.$p->last_cek_at.'</small>' !!}</td>
-								<td class="text-center">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>View</a>
-											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
-											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
-										</div>
-									</div>
+								
+								<td>
+									Start Time : {{ $p->pick_up_start_time ? Date('d/m/y H:i',strtotime($p->pick_up_start_time)) : '' }} <br>
+									End Time : {{ $p->pick_up_end_time ? Date('d/m/y H:i',strtotime($p->pick_up_end_time)) : ''}} <br>
 								</td>
+								<td>{{$p->rp_cod}}</td>
 							</tr>
 							@endforeach
 						</tbody>

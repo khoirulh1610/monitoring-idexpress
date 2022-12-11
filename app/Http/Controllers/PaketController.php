@@ -11,44 +11,59 @@ use App\Models\Paket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class PaketController extends Controller
 {
     public function index(Request $request)
     {
         
-        $paket = Paket::paginate(10);
+        $qpaket = " 1=1";
         if($request->filter_from){
-            $paket = Paket::where('pick_up_start_time','>=',Carbon::createFromFormat('d-m-Y', $request->filter_from)->format('Y-m-d'))->paginate(10);
+            // $paket->where('pick_up_start_time','>=',Carbon::createFromFormat('d-m-Y', $request->filter_from)->format('Y-m-d'));
+            $qpaket .= " and pick_up_start_time >= '".Carbon::createFromFormat('d-m-Y', $request->filter_from)->format('Y-m-d')."'";
         }
         if($request->filter_to){
-            $paket = Paket::where('pick_up_start_time','<=',Carbon::createFromFormat('d-m-Y', $request->filter_to)->format('Y-m-d').' 23:59')->paginate(10);
+            // $paket->where('pick_up_start_time','<=',Carbon::createFromFormat('d-m-Y', $request->filter_to)->format('Y-m-d').' 23:59');
+            $qpaket .= " and pick_up_start_time <= '".Carbon::createFromFormat('d-m-Y', $request->filter_to)->format('Y-m-d').' 23:59'."'";
         }
         if($request->filter_status=='Delivered'){
-            $paket = Paket::where('operationType','10')->paginate(10);
+            // $paket->where('operationType','10');
+            $qpaket .= " and operationType = '10'";
         }
         if($request->filter_status=='Dalam Proses'){
-            $paket = Paket::whereIn('operationType',['00','04','05','09'])->paginate(10);
+            // $paket->whereIn('operationType',['00','04','05','09']);
+            $qpaket .= " and operationType in ('00','04','05','09')";
         }
         if($request->filter_status=='Gagal Kirim'){
-            $paket = Paket::whereIn('operationType',['18','19'])->paginate(10);
+            // $paket->whereIn('operationType',['18','19']);
+            $qpaket .= " and operationType in ('18','19')";
         }
         if($request->filter_status=='Dalam Proses Lebih Dari 3 Hari'){
-            $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',3)->paginate(10);
+            // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',3);
+            $qpaket .= " and operationType in ('00','04','05','09') and overdue > 3";
         }
         if($request->filter_status=='Dalam Proses Lebih Dari 7 Hari'){
-            $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',7)->paginate(10);
+            // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);
+            $qpaket .= " and operationType in ('00','04','05','09') and overdue > 7";
         }
         if($request->filter_status=='belum_cek'){
-            $paket = Paket::whereNull('operationType')->paginate(10);
+            // $paket->whereNull('operationType');
+            $qpaket .= " and operationType is null";
         }
+        if($request->filter_by){
+            // $paket->where($request->filter_by,'like','%'.$request->keyword.'%');
+            $qpaket .= " and ".$request->filter_by." like '%".$request->keyword."%'";
+        }
+        $paket = DB::table("pakets")->whereRaw($qpaket)->paginate(10);
         // $paket->paginate(10);
+        // return $paket;
         return view('paket.index', compact('paket'));
     }
     
     public function show($id)
     {
-        $paket = Paket::find($id);
+        $paket = Paket::where('id',$id)->orWhere('waybill_no',$id)->first();
         if($paket){
             $json_paket = Tracking::idexpress($paket->waybill_no);
             if($json_paket['total']==1){
