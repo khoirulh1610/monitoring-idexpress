@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Helpers\Wa;
 use App\Models\Apiwa;
 use App\Models\LogCommand;
+use App\Models\Message;
 use App\Models\Notifikasi;
 use App\Models\Paket;
 use Carbon\Carbon;
@@ -64,19 +65,25 @@ class telat extends Command
                 $message = Wa::ReplaceArray($p, $temp_notif->copywriting);                
                 $tujuan = explode(',', $temp_notif->target_notif);
                 foreach ($tujuan as $t) {
+                    $logmsg = new Message();
+                    $logmsg->message = $message;
+                    $logmsg->phone = $t;
+                    $logmsg->apiwa_id = $api->id;                    
                     $wa = Wa::send($api->id,['phone' => $t, 'message' => $message]);
                     $res = json_decode($wa);
                     $status = 0;
                     if($res->message=='Terkirim'){
-                        $status = 1;
+                        $status = 1;                        
                     }elseif ('Belum Terdafar') {
-                        $status = 2;
+                        $status = 2;                        
                     }else{
                         $status = 3;
                     }
                     if($res->message=='device offline'){
                         Apiwa::where('id', $api->id)->update(['status' => 0]);
                     }
+                    $logmsg->status = $status;
+                    $logmsg->save();
                     $this->info($wa);
                 }                
             }
