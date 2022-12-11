@@ -47,7 +47,7 @@ class telat extends Command
         if($logcom){
             if($logcom->next_run_at){
                 if($logcom->next_run_at > Carbon::now()){
-                    exit;
+                    return false;
                 }
             }
         }
@@ -55,7 +55,7 @@ class telat extends Command
         $logcom->save();
         
         $overdue = $this->argument('overdue');
-        $paket = Paket::where('operationType','<>', 10)->where('overdue','>',$overdue)->get();
+        $paket = Paket::whereNotIn('operationType',['10','16'])->where('overdue','>',$overdue)->get();
         $temp_notif = Notifikasi::where('name', 'on_proses_7')->first();
         foreach ($paket as $p) {
             $this->info($p->waybill_no);
