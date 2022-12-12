@@ -52,17 +52,17 @@ class telat extends Command
                 }
             }
         }
-        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
-        $logcom->save();
+        
         
         $overdue = $this->argument('overdue');
         $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',$overdue)->get();
         $temp_notif = Notifikasi::where('name', 'on_proses_7')->first();
+        $no = 1;
+        $api = Apiwa::where('status', 1)->inRandomOrder()->first();
         foreach ($paket as $p) {
             $this->info($p->waybill_no);
-            $api = Apiwa::where('status', 1)->inRandomOrder()->first();
             if($api){
-                $message = Wa::ReplaceArray($p, $temp_notif->copywriting);                
+                $message = $no.". ".Wa::ReplaceArray($p, $temp_notif->copywriting);                
                 $tujuan = explode(',', $temp_notif->target_notif);
                 foreach ($tujuan as $t) {
                     $logmsg = new Message();
@@ -81,12 +81,16 @@ class telat extends Command
                     }
                     if($res->message=='device offline'){
                         Apiwa::where('id', $api->id)->update(['status' => 0]);
+                        return false;
                     }
                     $logmsg->status = $status;
                     $logmsg->save();
                     $this->info($wa);
-                }                
+                } 
+                $no++;
             }
         }
+        $logcom->next_run_at = Carbon::now()->addMinute($logcom->delay);
+        $logcom->save();
     }
 }
