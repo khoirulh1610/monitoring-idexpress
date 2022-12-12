@@ -56,7 +56,7 @@ class telat extends Command
         $logcom->save();
         
         $overdue = $this->argument('overdue');
-        $paket = Paket::whereNotIn('operationType',['10','16'])->where('overdue','>',$overdue)->get();
+        $paket = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',$overdue)->get();
         $temp_notif = Notifikasi::where('name', 'on_proses_7')->first();
         foreach ($paket as $p) {
             $this->info($p->waybill_no);
