@@ -45,12 +45,12 @@
 									@csrf
 									<div class="form-group">
 										<label class="form-control-label">Email Address</label>
-										<input type="email" name="email" class="form-control" value="admin@gmail.com">
+										<input type="email" name="email" class="form-control" value="">
 									</div>
 									<div class="form-group">
 										<label class="form-control-label">Password</label>
 										<div class="pass-group">
-											<input type="password" class="form-control pass-input" name="password" value="123456789">
+											<input type="password" class="form-control pass-input" name="password" value="">
 											<span class="fas fa-eye toggle-password"></span>
 										</div>
 									</div>
