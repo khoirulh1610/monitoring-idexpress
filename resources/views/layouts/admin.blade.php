@@ -100,7 +100,7 @@
 											<div class="media-body">
 												<p class="noti-details">
 													<span class="noti-title">{{$pk->waybill_no}}</span>
-													{!! str_replace('','',$pk->waybill_status)!!}
+													{!! strip_tags($pk->waybill_status)!!}
 												</p>
 												<p class="noti-time"><span class="notification-time">{{$pk->pick_up_end_time ?? $pk->last_cek_at}}</span></p>
 											</div>
