@@ -89,10 +89,10 @@
 
 
 	<div class="col-md-12 col-sm-12">
-		<div class="card card-two">			
+		<div class="card card-two">
 			<div class="card-body">
 
-				<div class="mb-3">					
+				<div class="mb-3">
 					{{ $paket->appends(request()->input())->links('vendor.pagination.bootstrap-4')}}
 				</div>
 				<div class="table-responsive">
@@ -108,7 +108,7 @@
 								<th class="text-center">Problem Paket</th>
 								<th class="text-center">Checker</th>
 								<th class="text-center">Update Bukti</th>
-								<th class="text-center">Action</th>																
+								<th class="text-center">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -129,23 +129,34 @@
 								$class = $status->class ?? '';
 								$note = $status->note ?? '-';
 								?>
-								
+
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
-								<td class="text-center"><span class="badge {{ $class }}">{{ $note }}</span></td>
 								<td class="text-center">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="btn btn-success btn-sm small action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>
-										<div class="dropdown-menu dropdown-menu-right dr" style="width: 250px;">
-											<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>History Paket</a>
-											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=crm_monitoring"><i class="fas fa-share me-2"></i>Masukan CRM Monitoring</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=rts"><i class="fas fa-share me-2"></i>Pindahkan Ke RTS</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=terkirim"><i class="fas fa-share me-2"></i>Pindahkan Ke Terkirim</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=claim"><i class="fas fa-share me-2"></i>Pindahkan Ke Barang Hilang</a>											
-											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
-										</div>
+									<div class="dropdown">					
+										<?php
+											$text_color = 'text-dark';
+											if($p->crm_monitor == 'Pending'){
+												$text_color = 'text-warning';
+											}elseif($p->crm_monitor == 'Clear'){
+												$text_color = 'text-dark';
+											}elseif($p->crm_monitor == 'Gagal'){
+												$text_color = 'text-dark';
+											}elseif($p->crm_monitor == 'Problem On Shipment'){
+												$text_color = 'text-danger';
+											}elseif($p->crm_monitor == 'Pending Confirm'){
+												$text_color = 'text-success';
+											}
+											?>											
+										<select name="status" id="status" data-id="{{$p->id}}" class="form-control {{ $text_color }}">
+											<option class="text-warning" value="Pending" {{ ($p->crm_monitor=='Pending') ? 'selected' : ''}}>Pending</option>
+											<option class="text-dark" value="Clear">Clear</option>
+											<option class="text-dark" value="Gagal">Gagal</option>
+											<option class="text-danger" value="Problem On Shipment" {{ ($p->crm_monitor=='Problem On Shipment') ? 'selected' : ''}}>Problem On Shipment</option>
+											<option class="text-success" value="Pending Confirm" {{ ($p->crm_monitor=='Pending Confirm') ? 'selected' : ''}}>Pending Confirm</option>
+										</select>
 									</div>
 								</td>
+								<td class="text-center"><span class="badge {{ $class }}">{{ $note }}</span></td>
 								<td>
 									<?php
 									$overdue = $p->overdue . ' Hari'; // . ' Hari ' . $hours . ' Jam ';
@@ -180,5 +191,31 @@
 @endsection
 
 @section('js')
-
+<script>
+	$('#status').on('change', function() {
+		console.log($(this).attr("data-id"));
+		Swal.fire({
+			title: 'Apakah anda yakin merubah status ke <b></b>'+this.value+'</b> ?',
+			// showDenyButton: true,
+			showCancelButton: true,
+			confirmButtonText: 'Ya',
+			denyButtonText: `Tidak`,
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				$.ajax({
+					'url':'crm-monitor?id='+$(this).attr("data-id")+'&status='+this.value,
+					success:function(data){
+						console.log(data);
+						if(data.reload){
+							location.reload();
+						}
+						Swal.fire('Saved!', '', 'success')
+					}
+				})
+				
+			} 
+		})
+	});
+</script>
 @endsection

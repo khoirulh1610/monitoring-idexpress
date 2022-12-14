@@ -54,10 +54,12 @@
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<li>
 								<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $paket->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
-							</li>
-							<li>
+								<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $paket->id }}?v=crm_monitoring"><i class="fas fa-share me-2"></i>Masukan CRM Monitoring</a>
+								<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $paket->id }}?v=rts"><i class="fas fa-share me-2"></i>Pindahkan Ke RTS</a>
+								<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $paket->id }}?v=terkirim"><i class="fas fa-share me-2"></i>Pindahkan Ke Terkirim</a>
+								<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $paket->id }}?v=claim"><i class="fas fa-share me-2"></i>Pindahkan Ke Barang Hilang</a>
 								<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $paket->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
-							</li>
+							</li>							
 						</ul>
 					</div>
 				</div>

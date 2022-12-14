@@ -7,7 +7,7 @@
 			<div class="col">
 				<h3 class="page-title">{{$title ?? 'Data Paket' }}</h3>
 				<ul class="breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html">Paket</a></li>
+					<li class="breadcrumb-item"><a href="/paket">Paket</a></li>
 					<li class="breadcrumb-item active">Detail</li>
 				</ul>
 			</div>

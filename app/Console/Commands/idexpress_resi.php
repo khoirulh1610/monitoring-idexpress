@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\IdexpressStatus;
 use App\Models\LogCommand;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class idexpress_resi extends Command
 {
@@ -155,7 +156,7 @@ class idexpress_resi extends Command
                                     $notif->save();
                                 }                                
                             } catch (\Throwable $th) {
-                                //throw $th;
+                                Log::error($th->getMessage());
                             }
                         }else{
                             Paket::where('waybill_no',$dd['waybillNo'])->update(['last_cek_at'=>Date('Y-m-d H:i:s')]);

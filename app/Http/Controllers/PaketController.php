@@ -228,9 +228,25 @@ class PaketController extends Controller
 
     public function crmMonitor(Request $request)
     {
+        if($request->ajax()){
+            $id = $request->id;
+            $status = $request->status;
+            $data_update = ['crm_monitor' => $status];
+            $reload = false;
+            if($status=='Clear'){
+                $data_update = ['crm_monitor' => null,'OperationType' => '10','status' => 'Delivered'];
+                $reload = true;
+            }
+            if($status=='Gagal'){
+                $data_update = ['crm_monitor' => null,'OperationType' => '18','returnFlag' => 1,'status' => 'Return To Sender'];
+                $reload = true;
+            }
+            Paket::where('id', $id)->update($data_update);
+            return response()->json(['success'=>'Status change successfully.','reload' => $reload]);
+        }
         $title = 'CRM Monitoring';
         $paket = Paket::whereNotNull('crm_monitor')->paginate(10);        
-        return view('paket.index', compact('paket', 'title'));
+        return view('paket.monitor', compact('paket', 'title'));
     }
 
     public function claim(Request $request)
