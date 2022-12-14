@@ -63,10 +63,16 @@ class message_kirim extends Command
         // Log::info('message:send runing at '.date('Y-m-d H:i:s'));
         $Messages = Message::where('status', 0)->get();
         foreach ($Messages as $message) {     
-            $api = Apiwa::where('status', 1)->inRandomOrder()->first();
+            
+            $last_msg = Message::where('phone', $message->phone)->whereNotNull('api_id')->orderBy('id','desc')->first();
+            $api_id = $last_msg->api_id ?? '';
+            if(!$last_msg){
+                $api = Apiwa::where('status', 1)->inRandomOrder()->first();
+                $api_id = $api->id ?? '';
+            }
             if($api){
                 if($message->phone && $message->message){
-                    $wa = Wa::send($api->id,['phone' => $message->phone, 'message' => $message->message]);
+                    $wa = Wa::send($api_id,['phone' => $message->phone, 'message' => $message->message]);
                     $res = json_decode($wa);
                     $status = 0;
                     if($res->message=='Terkirim'){
@@ -78,9 +84,9 @@ class message_kirim extends Command
                     }
                     if($res->message=='device offline'){
                         $status = 0;
-                        Apiwa::where('id', $api->id)->update(['status' => 0]);
+                        Apiwa::where('id', $api_id)->update(['status' => 0]);
                     }
-                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message,'api_id'=>$api->id,'next_run_at'=>date('Y-m-d H:i:s', strtotime('+'.($message->delay+60).' seconds'))]);          
+                    Message::where('id', $message->id)->update(['status' => $status,'report'=>$res->message,'api_id'=>$api_id,'next_run_at'=>date('Y-m-d H:i:s', strtotime('+'.($message->delay+60).' seconds'))]);          
                     sleep($message->delay);
                 }
             }

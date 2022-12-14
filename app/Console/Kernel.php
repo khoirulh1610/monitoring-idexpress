@@ -31,10 +31,10 @@ class Kernel extends ConsoleKernel
         //     Log::info('idexpress:resi runing at '.date('Y-m-d H:i:s'));
         // })->name('idexpress_cek')->withoutOverlapping()->everyTenMinutes();
 
-        $schedule->call(function () {
-            Artisan::call('idexpress:resi2');
-            Log::info('idexpress:resi2 runing at '.date('Y-m-d H:i:s'));
-        })->name('idexpress_cek')->everyThirtyMinutes();
+        // $schedule->call(function () {
+        //     Artisan::call('idexpress:resi2');
+        //     Log::info('idexpress:resi2 runing at '.date('Y-m-d H:i:s'));
+        // })->name('idexpress_cek')->everyThirtyMinutes();
 
         // $schedule->call(function () {
         //     Artisan::call('wa:status');

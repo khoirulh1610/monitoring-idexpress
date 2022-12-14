@@ -85,6 +85,11 @@ class idexpress_resi extends Command
             $temp_notif = Notifikasi::where('name', 'update-status')->first();
             $data = $cek['data'];
             foreach ($data as $dd) {
+                $podFlag = $dd['podFlag'];
+                $problemFlag = $dd['problemFlag'];
+                $returnFlag = $dd['returnFlag'];
+                $voidFlag = $dd['voidFlag'];
+                $pickupFlag = $dd['pickupFlag'];
                 $data2 = $dd['scanLineVOS'];
                 $rs = count($dd['scanLineVOS'])-1;
                 $this->info($rs);
@@ -98,7 +103,7 @@ class idexpress_resi extends Command
                             $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
                             if(!$status){
                                 Wa::send(1,['phone'=>'6285232843165','message'=>'Status tidak ditemukan '.$up['operationType'].' Pada Resi : '.$dd['waybillNo']]);
-                                exit;
+                                return false;
                             }
                             $col = $status->col ?? 'operationType';                                                 
                             $waybill_status = str_replace(['<b>','</b>','<b class="text-danger">'], "", $status->description).' '. $up[$col]; 
@@ -112,12 +117,23 @@ class idexpress_resi extends Command
                             $interval = $now->diff($overdue);
                             $overdue = $interval->format('%a');
                             // end cek overdue
-                            
+                            $data_update = [
+                                'operationType' => $up['operationType'],
+                                'pick_up_start_time'=> $tgl_kirim,
+                                'waybill_status' => $waybill_status,
+                                'status'=>$status->note,
+                                'overdue'=>$overdue,
+                                'podFlag'=>$podFlag,
+                                'problemFlag'=>$problemFlag,
+                                'returnFlag'=>$returnFlag,
+                                'voidFlag'=>$voidFlag,
+                                'pickupFlag'=>$pickupFlag,
+                                'last_cek_at'=>Date('Y-m-d H:i:s')
+                            ];
                             if ($up['operationType'] == '10') {
-                                Paket::where('id', $cek_paket->id)->update(['operationType' => $up['operationType'],'pick_up_start_time'=> $tgl_kirim, 'pick_up_end_time' => $up['operationTime'],'waybill_status' => $waybill_status,'status'=>$status->note,'overdue'=>$overdue,'last_cek_at'=>Date('Y-m-d H:i:s')]);
-                            } else {
-                                Paket::where('id', $cek_paket->id)->update(['operationType' => $up['operationType'],'pick_up_start_time'=> $tgl_kirim,'waybill_status' => $waybill_status,'status'=>$status->note,'overdue'=>$overdue,'last_cek_at'=>Date('Y-m-d H:i:s')]);
-                            }
+                                $data_update['pick_up_end_time'] = $up['operationTime'];                               
+                            } 
+                            Paket::where('id', $cek_paket->id)->update($data_update);
                             //  kirim notifikasi berdasarkan status                                   
                             try {
                                 $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
