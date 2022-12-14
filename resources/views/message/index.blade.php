@@ -96,7 +96,7 @@
                 <option value="all">All / Semua</option>
                 <option value="terkirim">Terkirim</option>
                 <option value="pending">Pending</option>
-                <option value="gagal">Gagal Kirim</option>                
+                <option value="gagal">Gagal Kirim</option>
               </select>
             </div>
           </div>
@@ -135,11 +135,14 @@
           <div class="col">
             <h5 class="card-title">Message</h5>
           </div>
-          {{-- <div class="col-auto">
-          <a href="#" class="btn-right btn btn-sm btn-outline-primary">
+          <div class="col-auto">
+          <!-- <a href="#" class="btn-right btn btn-sm btn-outline-primary">
             Filter
-          </a>
-        </div> --}}
+          </a> -->
+          <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteall" onclick="showModalDelete()">
+							<i class="fa fa-trash"></i> Hapus Semua
+						</button>
+        </div>
         </div>
       </div>
       <div class="card-body">
@@ -178,6 +181,46 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="deleteall" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="deleteall" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{url('/message/delete-all')}}" method="post">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteallLabel">Hapus Data Paket</h5>
+        </div>
+        <div class="modal-body">
+          @csrf
+          <div class="row ${1| ,row-cols-2,row-cols-3, auto,justify-content-md-center,|}">
+            <div class="col-12">
+              <label for="status">status</label>
+              <select name="status" id="status" class="form-control">
+                <option value="">Pilih Status</option>
+                <option value="all">All</option>
+                <option value="terkirim">Terkirim</option>
+                <option value="gagal">Gagal Kirim</option>
+                <option value="pending">Pending</option>                
+              </select>
+            </div>
+            <!-- <div class="col-12">
+              <label for="tanggal">Dari Tanggal</label>
+              <input type="text" name="tanggal" id="tanggal" class="form-control datetimepicker" data-date-format="YYYY-MM-DD">
+            </div>
+            <div class="col-12">
+              <label for="tanggal2">Sampai Tanggal</label>
+              <input type="text" name="tanggal2" id="tanggal2" class="form-control datetimepicker" data-date-format="YYYY-MM-DD">
+            </div> -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 @endsection
 @section('js')
 <script>
@@ -187,5 +230,9 @@
       $('#' + data).remove();
     });
   }
+
+  function showModalDelete() {
+		$('#deleteall').modal('show');
+	}
 </script>
 @endsection

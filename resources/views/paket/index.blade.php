@@ -160,7 +160,11 @@
 
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
 								<td class="text-center">
-									@if($p->returnFlag == 1)
+									@if($p->crm_monitor)
+									<span class="badge bg-success">CRM Monitoring</span>
+									@elseif ($p->claim)
+									<span class="badge bg-warning">Claim</span>
+									@elseif($p->returnFlag == 1)
 									<span class="badge bg-danger">RTS</span>
 									@else
 									<span class="badge {{ $class }}">{{ $note }}</span>

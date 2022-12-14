@@ -48,8 +48,8 @@ Route::middleware(['auth'])->group(function () {
     Route::any('setting/user/remove', 'UserController@remove')->name('users.remove');
 
     Route::get('/message', 'MessageController@index')->name('message');
-    Route::get('/message/delete/{id}', 'MessageController@delete')->name('message.delete');
-
+    Route::get('/message/delete/{id}', 'MessageController@delete')->name('message.delete');    
+    Route::post('/message/delete-all', 'MessageController@deleteAll')->name('message.delete-all');
     Route::get('test', function () {
         // $wa = App\Helpers\Wa::send(1, ['phone' => '085232843165', 'message' => 'test']);
         // return $wa;
