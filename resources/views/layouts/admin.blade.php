@@ -155,8 +155,8 @@
 								<span>Data Paket</span>
 							</a>
 						</li>
-						<li class="{{ request()->is('rts*') ? 'active' : '' }}">
-							<a href="{{ url('rts') }}">
+						<li class="{{ request()->is('crm-monitor*') ? 'active' : '' }}">
+							<a href="{{ url('crm-monitor') }}">
 								<i class="mdi mdi-arrange-bring-forward" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-arrange-bring-forward" aria-label="mdi-arrange-bring-forward"></i>
 								<span>CRM Monitoring</span>
 							</a>
@@ -166,6 +166,13 @@
 							<a href="{{ url('claim') }}">
 								<i class="mdi mdi-arrange-bring-forward" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-arrange-bring-forward" aria-label="mdi-arrange-bring-forward"></i>
 								<span>Paket Hilang (CLAIM)</span>
+							</a>
+						</li>
+
+						<li class="{{ request()->is('rts*') ? 'active' : '' }}">
+							<a href="{{ url('rts') }}">
+								<i class="mdi mdi-arrange-bring-forward" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-arrange-bring-forward" aria-label="mdi-arrange-bring-forward"></i>
+								<span>Paket RTS</span>
 							</a>
 						</li>
 

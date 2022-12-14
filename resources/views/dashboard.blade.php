@@ -209,10 +209,10 @@
 
 								</td>
 								
-								
+								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
 								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
 								</td>
-								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
+								
 								<td class="text-center">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="btn btn-success btn-sm action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>

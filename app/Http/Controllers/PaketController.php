@@ -198,13 +198,27 @@ class PaketController extends Controller
             if($value=='terkirim'){
                 $paket->operationType = '10';
                 $paket->status = 'Delivered';
+                $paket->crm_monitor = null;
+                $paket->claim = null;
+                $paket->returnFlag = 0; 
                 $paket->manual_status = 'Manual Action';
                 $paket->save();
             }
 
             if($value=='claim'){                
-                $paket->status = 'Claim';
-                $paket->manual_status = 'Claim';
+                $paket->claim = 'Y';
+                $paket->manual_status = 'Pengajuan Claim';
+                $paket->save();
+            }
+
+            if($value=='crm_monitoring'){                
+                $paket->crm_monitor = 'Y';
+                $paket->manual_status = 'Monitoring CRM';
+                $paket->save();
+            }
+            if($value=='rts'){                
+                $paket->returnFlag = 1;
+                $paket->manual_status = 'returnFlag Manual';
                 $paket->save();
             }
         }
@@ -212,17 +226,22 @@ class PaketController extends Controller
     }
     
 
-    public function claim(Request $request)
+        public function crmMonitor(Request $request)
     {
-        $paket = Paket::whereNotNull('rts')->paginate(10);
-        return view('paket.claim', compact('paket'));
-    }
-
-    public function crmMonitor(Request $request)
-    {
-        $paket = Paket::whereNotNull('rts')->paginate(10);
-        return view('paket.crm-monitor', compact('paket'));
+        $paket = Paket::whereNotNull('crm_monitor')->paginate(10);
+        return view('paket.index', compact('paket'));
     }
     
+    public function claim(Request $request)
+    {
+        $paket = Paket::whereNotNull('claim')->paginate(10);
+        return view('paket.index', compact('paket'));
+    }
+
+    public function rts(Request $request)
+    {
+        $paket = Paket::where('returnFlag',1)->paginate(10);
+        return view('paket.index', compact('paket'));
+    }
     
 }
