@@ -136,7 +136,7 @@
 									{{ $p->recipient_phone }}
 
 								</td>
-								<td>{!! $p->waybill_status !!}</td>
+								<td>{!! wordwrap($p->waybill_status,25,"<br/>",true) !!}</td>
 								<td class="text-center">
 									<div class="dropdown">
 
