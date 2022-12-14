@@ -58,8 +58,8 @@ class idexpress_resi extends Command
                 }
             }
             if($logcom->status==1){
-                $this->info("Skip already running ".Carbon::now()->subMinute(60));     
-                if($logcom->next_run_at<Carbon::now()->subMinute(60)){
+                $this->info("Skip already running ".Carbon::now()->subMinute(20));     
+                if($logcom->next_run_at<Carbon::now()->subMinute(20)){
                     $logcom->status = 0;
                     $logcom->save();
                 }
