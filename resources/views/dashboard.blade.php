@@ -187,7 +187,7 @@
 								<th class="text-center">Recipient Name</th>
 								<th class="text-center">Note</th>
 								<th class="text-center">Status</th>
-								<th class="text-center">Action</th>								
+								<th class="text-center">Action</th>
 								<th class="text-center">Overdue</th>
 								<!-- <th class="text-center">Batch Order</th> -->
 								<th class="text-center">Destination</th>
@@ -201,31 +201,35 @@
 								<td class="text-center">
 									{{ $loop->iteration }}
 								</td>
-								
+
 								<td>{{ $p->waybill_no }}</td>
 								<td>
 									{{ $p->recipient_name }} <br>
 									{{ $p->recipient_phone }}
 
 								</td>
-								
+
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
 								<td class="text-center"><span class="badge {{ $p->IdexpressStatus->class ?? '' }}">{{ $p->IdexpressStatus->note ?? '-' }}</span>
 								</td>
-								
+
 								<td class="text-center">
 									<div class="dropdown dropdown-action">
-										<a href="#" class="btn btn-success btn-sm action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>
-										<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>View</a>
+										<a href="#" class="btn btn-success btn-sm small action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>
+										<div class="dropdown-menu dropdown-menu-right dr" style="width: 250px;">
+											<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>History Paket</a>
 											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
+											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=crm_monitoring"><i class="fas fa-share me-2"></i>Masukan CRM Monitoring</a>
+											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=rts"><i class="fas fa-share me-2"></i>Pindahkan Ke RTS</a>
+											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=terkirim"><i class="fas fa-share me-2"></i>Pindahkan Ke Terkirim</a>
+											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=claim"><i class="fas fa-share me-2"></i>Pindahkan Ke Barang Hilang</a>
 											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
 										</div>
 									</div>
 								</td>
 								<td>
-									<?php																		
-									$overdue = $p->overdue .' Hari';// . ' Hari ' . $hours . ' Jam ';
+									<?php
+									$overdue = $p->overdue . ' Hari'; // . ' Hari ' . $hours . ' Jam ';
 									$class_overdue = $p->overdue > 3 ? 'text-warning' : ($p->overdue > 7 ? 'text-danger' : '');
 									?>
 									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
@@ -234,7 +238,7 @@
 								<td>
 									{{ $p->destination }}
 								</td>
-								
+
 								<td>
 									Start Time : {{ $p->pick_up_start_time ? Date('d/m/y H:i',strtotime($p->pick_up_start_time)) : '' }} <br>
 									End Time : {{ $p->pick_up_end_time ? Date('d/m/y H:i',strtotime($p->pick_up_end_time)) : ''}} <br>
