@@ -17,81 +17,81 @@ class PaketController extends Controller
 {
     public function index(Request $request)
     {
-        
+
         $qpaket = " 1=1";
-        if($request->filter_from){
+        if ($request->filter_from) {
             // $paket->where('pick_up_start_time','>=',Carbon::createFromFormat('d-m-Y', $request->filter_from)->format('Y-m-d'));
-            $qpaket .= " and pick_up_start_time >= '".Carbon::createFromFormat('d-m-Y', $request->filter_from)->format('Y-m-d')."'";
+            $qpaket .= " and pick_up_start_time >= '" . Carbon::createFromFormat('d-m-Y', $request->filter_from)->format('Y-m-d') . "'";
         }
-        if($request->filter_to){
+        if ($request->filter_to) {
             // $paket->where('pick_up_start_time','<=',Carbon::createFromFormat('d-m-Y', $request->filter_to)->format('Y-m-d').' 23:59');
-            $qpaket .= " and pick_up_start_time <= '".Carbon::createFromFormat('d-m-Y', $request->filter_to)->format('Y-m-d').' 23:59'."'";
+            $qpaket .= " and pick_up_start_time <= '" . Carbon::createFromFormat('d-m-Y', $request->filter_to)->format('Y-m-d') . ' 23:59' . "'";
         }
-        if($request->filter_status=='Delivered'){
+        if ($request->filter_status == 'Delivered') {
             // $paket->where('operationType','10');
             $qpaket .= " and operationType = '10'";
         }
-        if($request->filter_status=='Dalam Proses'){
+        if ($request->filter_status == 'Dalam Proses') {
             // $paket->whereIn('operationType',['00','04','05','09']);
             $qpaket .= " and operationType in ('00','04','05','09')";
         }
-        if($request->filter_status=='Gagal Kirim'){
+        if ($request->filter_status == 'Gagal Kirim') {
             // $paket->whereIn('operationType',['18','19']);
             $qpaket .= " and operationType in ('18','19')";
         }
-        if($request->filter_status=='Dalam Proses Lebih Dari 3 Hari'){
+        if ($request->filter_status == 'Dalam Proses Lebih Dari 3 Hari') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',3);
             $qpaket .= " and operationType in ('00','04','05','09') and overdue > 3";
         }
-        if($request->filter_status=='Dalam Proses Lebih Dari 7 Hari'){
+        if ($request->filter_status == 'Dalam Proses Lebih Dari 7 Hari') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);
             $qpaket .= " and operationType in ('00','04','05','09') and overdue > 7";
         }
-        if($request->filter_status=='tidak_valid'){
+        if ($request->filter_status == 'tidak_valid') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);
             $qpaket .= " and operationType in ('xx')";
         }
-        if($request->filter_status=='belum_cek'){
+        if ($request->filter_status == 'belum_cek') {
             // $paket->whereNull('operationType');
             $qpaket .= " and operationType is null";
         }
-        if($request->filter_by){
+        if ($request->filter_by) {
             // $paket->where($request->filter_by,'like','%'.$request->keyword.'%');
-            $qpaket .= " and ".$request->filter_by." like '%".$request->keyword."%'";
+            $qpaket .= " and " . $request->filter_by . " like '%" . $request->keyword . "%'";
         }
         $paket = DB::table("pakets")->whereRaw($qpaket)->paginate(10);
         // $paket->paginate(10);
         // return $paket;
         return view('paket.index', compact('paket'));
     }
-    
+
     public function show($id)
     {
-        $paket = Paket::where('id',$id)->orWhere('waybill_no',$id)->first();
-        if($paket){
+        $paket = Paket::where('id', $id)->orWhere('waybill_no', $id)->first();
+        if ($paket) {
             $json_paket = Tracking::idexpress($paket->waybill_no);
-            if($json_paket['total']==1){
+            if ($json_paket['total'] == 1) {
                 $data = $json_paket['data'][0];
                 try {
                     $data_up = $data['scanLineVOS'][0];
-                    if($data_up){
-                        $status = \App\Models\IdexpressStatus::where('operationType',$data_up['operationType'])->first();
-						$col = $status->col ?? 'operationType';
-                        $paket->operationType = $data_up['operationType'];                        
-                        $paket->waybill_status = str_replace(["<b>","</b>"], "", $status->description).' '. $data_up[$col];
+                    if ($data_up) {
+                        $status = \App\Models\IdexpressStatus::where('operationType', $data_up['operationType'])->first();
+                        $col = $status->col ?? 'operationType';
+                        $paket->operationType = $data_up['operationType'];
+                        $paket->waybill_status = str_replace(["<b>", "</b>"], "", $status->description) . ' ' . $data_up[$col];
                         $paket->save();
                     }
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
-                return view('paket.show', compact('paket','data'));
-            }else{
+                return view('paket.show', compact('paket', 'data'));
+            } else {
                 $paket->waybill_status = 'TIDAK VALID';
                 $paket->operationType = 'xx';
-                $paket->last_cek_at = Carbon::now(); 
+                $paket->last_cek_at = Carbon::now();
                 $paket->save();
                 return redirect()->back()->with('error', 'TIDAK VALID');
-            }            
+            }
         }
         return redirect()->back();
     }
@@ -151,7 +151,7 @@ class PaketController extends Controller
             $paket->recipient_phone = $data['recipient_phone'];
             $paket->recipient_address = $data['recipient_address'];
             $paket->zip_code = $data['zip_code'];
-            $paket->rp_cod = 'Rp. '.number_format($data['cod_amount']);
+            $paket->rp_cod = 'Rp. ' . number_format($data['cod_amount']);
             $paket->save();
         }
         // dispatch(new CekresiJOb());
@@ -159,17 +159,17 @@ class PaketController extends Controller
     }
 
 
-    public function resendNotif($id)    
+    public function resendNotif($id)
     {
         $paket = Paket::find($id);
-        if($paket){
-            $template_notif = Notifikasi::where('name', 'update-status')->first();                 
-            if($template_notif){
-                $apiwa = Apiwa::where('status',1)->first();
-                $kirim = Wa::send($apiwa->id,[
+        if ($paket) {
+            $template_notif = Notifikasi::where('name', 'update-status')->first();
+            if ($template_notif) {
+                $apiwa = Apiwa::where('status', 1)->first();
+                $kirim = Wa::send($apiwa->id, [
                     "phone" => $paket->recipient_phone,
-                    "message" => Wa::ReplaceArray($paket,$template_notif->copywriting),
-                ]);                
+                    "message" => Wa::ReplaceArray($paket, $template_notif->copywriting),
+                ]);
             }
         }
         return redirect()->back();
@@ -178,7 +178,7 @@ class PaketController extends Controller
     public function delete($id)
     {
         $paket = Paket::find($id);
-        if($paket){
+        if ($paket) {
             $paket->delete();
         }
         return redirect()->back()->with('success', 'Data berhasil dihapus');
@@ -194,29 +194,29 @@ class PaketController extends Controller
     {
         $value = $request->v;
         $paket = Paket::find($id);
-        if($paket){
-            if($value=='terkirim'){
+        if ($paket) {
+            if ($value == 'terkirim') {
                 $paket->operationType = '10';
                 $paket->status = 'Delivered';
                 $paket->crm_monitor = null;
                 $paket->claim = null;
-                $paket->returnFlag = 0; 
+                $paket->returnFlag = 0;
                 $paket->manual_status = 'Manual Action';
                 $paket->save();
             }
 
-            if($value=='claim'){                
+            if ($value == 'claim') {
                 $paket->claim = 'Y';
                 $paket->manual_status = 'Pengajuan Claim';
                 $paket->save();
             }
 
-            if($value=='crm_monitoring'){                
+            if ($value == 'crm_monitoring') {
                 $paket->crm_monitor = 'Y';
                 $paket->manual_status = 'Monitoring CRM';
                 $paket->save();
             }
-            if($value=='rts'){                
+            if ($value == 'rts') {
                 $paket->returnFlag = 1;
                 $paket->manual_status = 'returnFlag Manual';
                 $paket->save();
@@ -224,24 +224,26 @@ class PaketController extends Controller
         }
         return redirect()->back()->with('success', 'Data berhasil diupdate');
     }
-    
 
-        public function crmMonitor(Request $request)
+
+    public function crmMonitor(Request $request)
     {
-        $paket = Paket::whereNotNull('crm_monitor')->paginate(10);
-        return view('paket.index', compact('paket'));
+        $title = 'CRM Monitoring';
+        $paket = Paket::whereNotNull('crm_monitor')->paginate(10);        
+        return view('paket.index', compact('paket', 'title'));
     }
-    
+
     public function claim(Request $request)
     {
+        $title = 'Pengajuan Claim';
         $paket = Paket::whereNotNull('claim')->paginate(10);
-        return view('paket.index', compact('paket'));
+        return view('paket.index', compact('paket', 'title'));
     }
 
     public function rts(Request $request)
     {
-        $paket = Paket::where('returnFlag',1)->paginate(10);
-        return view('paket.index', compact('paket'));
+        $title = 'Return To Sender';
+        $paket = Paket::where('returnFlag', 1)->paginate(10);
+        return view('paket.index', compact('paket', 'title'));
     }
-    
 }

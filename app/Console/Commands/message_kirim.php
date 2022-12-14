@@ -70,7 +70,7 @@ class message_kirim extends Command
                 $api = Apiwa::where('status', 1)->inRandomOrder()->first();
                 $api_id = $api->id ?? '';
             }
-            if($api){
+            if($api_id){
                 if($message->phone && $message->message){
                     $wa = Wa::send($api_id,['phone' => $message->phone, 'message' => $message->message]);
                     $res = json_decode($wa);
