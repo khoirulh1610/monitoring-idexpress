@@ -129,7 +129,7 @@
 								<th class="text-center">Status</th>
 								<th class="text-center">Action</th>
 								<th class="text-center">Overdue</th>
-								<th class="text-center">Batch Order</th>
+								<!-- <th class="text-center">Batch Order</th> -->
 								<th class="text-center">Destination</th>
 								<th class="text-center">Pick Up</th>
 								<th class="text-center">Rp COD</th>
@@ -177,7 +177,7 @@
 									?>
 									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
 								</td>
-								<td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td>
+								<!-- <td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td> -->
 								<td>
 									{{ $p->destination }}
 								</td>

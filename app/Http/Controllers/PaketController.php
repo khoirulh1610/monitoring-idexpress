@@ -33,7 +33,7 @@ class PaketController extends Controller
         }
         if ($request->filter_status == 'Dalam Proses') {
             // $paket->whereIn('operationType',['00','04','05','09']);
-            $qpaket .= " and operationType in ('00','04','05','09')";
+            $qpaket .= " and operationType in ('00','04','05','09') and returnFlag<>1";
         }
         if ($request->filter_status == 'Gagal Kirim') {
             // $paket->whereIn('operationType',['18','19']);
@@ -41,11 +41,11 @@ class PaketController extends Controller
         }
         if ($request->filter_status == 'Dalam Proses Lebih Dari 3 Hari') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',3);
-            $qpaket .= " and operationType in ('00','04','05','09') and overdue > 3";
+            $qpaket .= " and operationType in ('00','04','05','09') and overdue > 3 and returnFlag<>1";
         }
         if ($request->filter_status == 'Dalam Proses Lebih Dari 7 Hari') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);
-            $qpaket .= " and operationType in ('00','04','05','09') and overdue > 7";
+            $qpaket .= " and operationType in ('00','04','05','09') and overdue > 7 and returnFlag<>1";
         }
         if ($request->filter_status == 'tidak_valid') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',7);

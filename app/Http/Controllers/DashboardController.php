@@ -12,10 +12,10 @@ class DashboardController extends Controller
         
         $delivered = Paket::where('operationType', '10')->count();
         $gagal = Paket::whereIn('operationType', ['18','19'])->count();
-        $onprocess = Paket::whereIn('operationType',['00','04','05','09'])->count();
-        $plus3 = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',3)->count();
-        $plus7 = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',7)->count();
-        $paket = Paket::take(10)->orderBy('last_cek_at','desc')->get();
+        $onprocess = Paket::whereIn('operationType',['00','04','05','09'])->where('returnFlag','<>',1)->count();
+        $plus3 = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',3)->where('returnFlag','<>',1)->count();
+        $plus7 = Paket::whereIn('operationType',['00','04','05','09'])->where('overdue','>',7)->where('returnFlag','<>',1)->count();
+        $paket = Paket::take(10)->orderBy('last_cek_at','desc')->where('returnFlag','<>',1)->get();
         $tidak_valid = Paket::whereIn('operationType',['xx'])->count();
         $belum_proses = Paket::whereNull('operationType')->count();
         $rts = Paket::where('returnFlag',1)->count();
