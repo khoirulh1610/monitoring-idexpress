@@ -179,12 +179,12 @@
 
 						<li class="{{ request()->is('message*') ? 'active' : '' }}">
 							<a href="{{ route('message') }}">
-								<i class="fas fa-envelope" data-bs-toggle="tooltip" title=""></i>
+								<i class="fas fa-paper-plane" data-bs-toggle="tooltip" title=""></i>
 								<span>Message</span>
 							</a>
 						</li>
 						<li class="submenu">
-							<a href="#"><i data-feather="clipboard"></i> <span> Setting</span> <span class="menu-arrow"></span></a>
+							<a href="#"><i data-feather="settings"></i> <span> Setting</span> <span class="menu-arrow"></span></a>
 							<ul>
 								<li><a href="/setting/notifikasi"></i> Notifikasi WA</a></li>
 								<li><a href="/setting/user">Users</a></li>
