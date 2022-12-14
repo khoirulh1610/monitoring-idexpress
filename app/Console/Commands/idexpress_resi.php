@@ -137,7 +137,7 @@ class idexpress_resi extends Command
                             //  kirim notifikasi berdasarkan status                                   
                             try {
                                 $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
-                                if($cek_paket && $status->kirim_wa==1){
+                                if($cek_paket && $status->kirim_wa==1 && $problemFlag==0){
                                     $notif = new Message();                                
                                     $notif->phone = $cek_paket->recipient_phone;
                                     $notif->message = Wa::ReplaceArray($cek_paket,$temp_notif->copywriting);

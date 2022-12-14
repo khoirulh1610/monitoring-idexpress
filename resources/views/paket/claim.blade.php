@@ -49,7 +49,7 @@
 								<option value="">All / Semua</option>
 								<option value="waybill_no">WaybillNo</option>
 								<option value="recipient_phone">Phone / HP</option>
-								<option value="recipient_name">Nama</option>
+								<option value="recipient_name">Nama</option>								
 							</select>
 						</div>
 					</div>
@@ -103,7 +103,7 @@
 				</div>
 			</div>
 			<div class="card-body">
-
+			
 				<div class="mb-3">
 					<!-- <div class="row">
 						<div class="col-auto">
@@ -119,7 +119,7 @@
 					{{ $paket->appends(request()->input())->links('vendor.pagination.bootstrap-4')}}
 				</div>
 				<div class="table-responsive">
-					<table class="table table-stripped small" id="tabel-paket">
+				<table class="table table-stripped small" id="tabel-paket">
 						<thead class="thead-light">
 							<tr>
 								<th class="text-center">No</th>
@@ -127,7 +127,7 @@
 								<th class="text-center">Recipient Name</th>
 								<th class="text-center">Note</th>
 								<th class="text-center">Status</th>
-								<th class="text-center">Action</th>
+								<th class="text-center">Action</th>								
 								<th class="text-center">Overdue</th>
 								<th class="text-center">Batch Order</th>
 								<th class="text-center">Destination</th>
@@ -141,7 +141,7 @@
 								<td class="text-center">
 									{{ $loop->iteration }}
 								</td>
-
+								
 								<td>{{ $p->waybill_no }}</td>
 								<td>
 									{{ $p->recipient_name }} <br>
@@ -149,9 +149,9 @@
 
 								</td>
 								<?php
-								$status = \App\Models\IdexpressStatus::where('operationType', $p->operationType)->first();
-								$class = $status->class ?? '';
-								$note = $status->note ?? '-';
+									$status = \App\Models\IdexpressStatus::where('operationType',$p->operationType)->first();
+									$class = $status->class ?? '';
+									$note = $status->note ?? '-';
 								?>
 								<td class="text-center"><span class="badge {{ $class }}">{{ $note }}</span>
 								</td>
@@ -159,20 +159,16 @@
 								<td class="text-center">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="btn btn-success btn-sm small action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>
-										<div class="dropdown-menu dropdown-menu-right dr" style="width: 250px;">
-											<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>History Paket</a>
+										<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" href="{{ url('paket/show') }}/{{ $p->id }}"><i class="far fa-eye me-2"></i>View</a>
 											<a class="dropdown-item" href="{{ url('paket/resend-notif') }}/{{ $p->id }}"><i class="far fa-paper-plane me-2"></i>Resend Notif</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=crm_monitoring"><i class="fas fa-share me-2"></i>Masukan CRM Monitoring</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=rts"><i class="fas fa-share me-2"></i>Pindahkan Ke RTS</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=terkirim"><i class="fas fa-share me-2"></i>Pindahkan Ke Terkirim</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=claim"><i class="fas fa-share me-2"></i>Pindahkan Ke Barang Hilang</a>											
 											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
 										</div>
 									</div>
 								</td>
 								<td>
-									<?php
-									$overdue = $p->overdue . ' Hari'; // . ' Hari ' . $hours . ' Jam ';
+									<?php																		
+									$overdue = $p->overdue .' Hari';// . ' Hari ' . $hours . ' Jam ';
 									$class_overdue = $p->overdue > 3 ? 'text-warning' : ($p->overdue > 7 ? 'text-danger' : '');
 									?>
 									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
@@ -181,7 +177,7 @@
 								<td>
 									{{ $p->destination }}
 								</td>
-
+								
 								<td>
 									Start Time : {{ $p->pick_up_start_time ? Date('d/m/y H:i',strtotime($p->pick_up_start_time)) : '' }} <br>
 									End Time : {{ $p->pick_up_end_time ? Date('d/m/y H:i',strtotime($p->pick_up_end_time)) : ''}} <br>
@@ -191,10 +187,10 @@
 							@endforeach
 						</tbody>
 					</table>
-				</div>
+				</div>				
 			</div>
 			<div class="card-footer">
-				{{ $paket->appends(request()->input())->links('vendor.pagination.bootstrap-4')}}
+					{{ $paket->appends(request()->input())->links('vendor.pagination.bootstrap-4')}}
 			</div>
 		</div>
 	</div>

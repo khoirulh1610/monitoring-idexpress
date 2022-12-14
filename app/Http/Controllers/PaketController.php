@@ -183,4 +183,46 @@ class PaketController extends Controller
         }
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
+
+    public function deleteAll(Request $request)
+    {
+        $paket = Paket::truncate();
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $value = $request->v;
+        $paket = Paket::find($id);
+        if($paket){
+            if($value=='terkirim'){
+                $paket->operationType = '10';
+                $paket->status = 'Delivered';
+                $paket->manual_status = 'Manual Action';
+                $paket->save();
+            }
+
+            if($value=='claim'){                
+                $paket->status = 'Claim';
+                $paket->manual_status = 'Claim';
+                $paket->save();
+            }
+        }
+        return redirect()->back()->with('success', 'Data berhasil diupdate');
+    }
+    
+
+    public function claim(Request $request)
+    {
+        $paket = Paket::whereNotNull('rts')->paginate(10);
+        return view('paket.claim', compact('paket'));
+    }
+
+    public function crmMonitor(Request $request)
+    {
+        $paket = Paket::whereNotNull('rts')->paginate(10);
+        return view('paket.crm-monitor', compact('paket'));
+    }
+    
+    
 }

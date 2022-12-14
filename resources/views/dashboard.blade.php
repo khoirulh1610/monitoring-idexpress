@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Delivered&filter_from=&filter_to=')}}">
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses&filter_from=&filter_to=')}}">
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Gagal+Kirim&filter_from=&filter_to=')}}">
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+3+Hari&filter_from=&filter_to=')}}">
@@ -80,7 +80,7 @@
 		</div>
 	</div>
 
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=Dalam+Proses+Lebih+Dari+7+Hari&filter_from=&filter_to=')}}">
@@ -100,7 +100,27 @@
 		</div>
 	</div>
 
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
+		<div class="card card-two">
+			<div class="card-body">
+				<a href="{{url('rts')}}">
+					<div class="dash-widget-header">
+						<span class="dash-widget-icon bg-3 bg-yellow">
+							<i class="mdi mdi-alarm-check" data-bs-toggle="tooltip" title="" data-bs-original-title="mdi-alarm-check" aria-label="mdi-alarm-check"></i>
+						</span>
+						<div class="dash-count">
+							<div class="dash-title">RTS</div>
+							<div class="dash-counts">
+								<p>{{ number_format($rts ?? 0) }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=belum_cek&filter_from=&filter_to=')}}">
@@ -119,7 +139,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xl-2 col-sm-4 col-12">
+	<div class="col-xl-3 col-sm-4 col-12">
 		<div class="card card-two">
 			<div class="card-body">
 				<a href="{{url('paket?filter_status=tidak_valid&filter_from=&filter_to=')}}">
