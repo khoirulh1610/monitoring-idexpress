@@ -209,7 +209,7 @@ class PaketController extends Controller
             $query .= " 1=1";
         }
         if($request->tanggal && $request->tanggal2){
-            $query .= " and pick_up_start_time between '".$request->tanggal."' and '".$request->tanggal2."'";
+            $query .= " and created_at between '".$request->tanggal."' and '".$request->tanggal2."'";
         }
         DB::statement("delete from pakets where ".$query);
         return redirect()->back()->with('success', 'Data berhasil dihapus');
