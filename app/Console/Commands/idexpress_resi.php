@@ -58,7 +58,11 @@ class idexpress_resi extends Command
                 }
             }
             if($logcom->status==1){
-                $this->info("Skip already running");         
+                $this->info("Skip already running ".Carbon::now()->subMinute(60));     
+                if($logcom->next_run_at<Carbon::now()->subMinute(60)){
+                    $logcom->status = 0;
+                    $logcom->save();
+                }
                 exit;
             }
         }                
@@ -116,6 +120,7 @@ class idexpress_resi extends Command
                             $overdue = new \DateTime($tgl_kirim);
                             $interval = $now->diff($overdue);
                             $overdue = $interval->format('%a');
+                            $problemCode = $up['problemCode'] ?? '';
                             // end cek overdue
                             $data_update = [
                                 'operationType' => $up['operationType'],
@@ -128,6 +133,8 @@ class idexpress_resi extends Command
                                 'returnFlag'=>$returnFlag,
                                 'voidFlag'=>$voidFlag,
                                 'pickupFlag'=>$pickupFlag,
+                                'problemCode'=>$problemCode,
+                                'claim'=> ($problemCode=='3013') ? 'Y' : null,
                                 'last_cek_at'=>Date('Y-m-d H:i:s')
                             ];
                             if ($up['operationType'] == '10') {

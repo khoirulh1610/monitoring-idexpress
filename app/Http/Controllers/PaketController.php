@@ -237,7 +237,7 @@ class PaketController extends Controller
     {
         $title = 'Pengajuan Claim';
         $paket = Paket::whereNotNull('claim')->paginate(10);
-        return view('paket.index', compact('paket', 'title'));
+        return view('paket.claim', compact('paket', 'title'));
     }
 
     public function rts(Request $request)
