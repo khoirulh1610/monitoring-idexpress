@@ -155,7 +155,13 @@
 								?>
 								
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
-								<td class="text-center"><span class="badge {{ $class }}">{{ $note }}</span></td>
+								<td class="text-center">
+									@if($p->returnFlag == 1)
+									<span class="badge bg-danger">RTS</span>
+									@else
+									<span class="badge {{ $class }}">{{ $note }}</span>
+									@endif
+								</td>
 								<td class="text-center">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="btn btn-success btn-sm small action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">action</a>

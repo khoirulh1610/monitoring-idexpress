@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paket/update/{id}', 'PaketController@update');
     Route::get('/claim', 'PaketController@claim')->name('claim');
     Route::get('/crm-monitor', 'PaketController@crmMonitor')->name('crm-monitor');
+    Route::any('/crm-monitor/update/{id}', 'PaketController@crmMonitorUpdate')->name('crm-monitor.update');
     Route::get('/rts', 'PaketController@rts')->name('rts');
 
     Route::get('setting/notifikasi', 'NotifikasiController@index')->name('notifikasi');

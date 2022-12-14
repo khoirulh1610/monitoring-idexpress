@@ -212,7 +212,7 @@ class PaketController extends Controller
             }
 
             if ($value == 'crm_monitoring') {
-                $paket->crm_monitor = 'Y';
+                $paket->crm_monitor = 'Pending';
                 $paket->manual_status = 'Monitoring CRM';
                 $paket->save();
             }
@@ -248,6 +248,46 @@ class PaketController extends Controller
         $paket = Paket::whereNotNull('crm_monitor')->paginate(10);        
         return view('paket.monitor', compact('paket', 'title'));
     }
+
+    public function crmMonitorUpdate(Request $request, $id)
+    {
+        
+        $paket = Paket::where('id', $id)->orWhere('waybill_no', $id)->first();
+        if($request->method()=='POST'){
+            $paket->problem_paket = $request->problem_paket;
+            $paket->checker = $request->checker;
+            $paket->img_url = $request->img_url;
+            $paket->save();
+        }
+
+        if ($paket) {
+            $json_paket = Tracking::idexpress($paket->waybill_no);
+            if ($json_paket['total'] == 1) {
+                $data = $json_paket['data'][0];
+                try {
+                    $data_up = $data['scanLineVOS'][0];
+                    if ($data_up) {
+                        $status = \App\Models\IdexpressStatus::where('operationType', $data_up['operationType'])->first();
+                        $col = $status->col ?? 'operationType';
+                        $paket->operationType = $data_up['operationType'];
+                        $paket->waybill_status = str_replace(["<b>", "</b>"], "", $status->description) . ' ' . $data_up[$col];
+                        $paket->save();
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+                return view('paket.monitor-update', compact('paket', 'data'));
+            } else {
+                $paket->waybill_status = 'TIDAK VALID';
+                $paket->operationType = 'xx';
+                $paket->last_cek_at = Carbon::now();
+                $paket->save();
+                return redirect()->back()->with('error', 'TIDAK VALID');
+            }
+        }    
+        
+    }
+    
 
     public function claim(Request $request)
     {

@@ -113,7 +113,19 @@
 						</thead>
 						<tbody>
 							@foreach ($paket as $p)
-							<tr>
+							<?php
+							$bg_color = 'bg-default';
+							if ($p->crm_monitor == 'Pending') {
+								$bg_color = 'bg-warning';
+							} elseif ($p->crm_monitor == 'Problem On Shipment') {
+								$bg_color = 'bg-ping';
+							} elseif ($p->crm_monitor == 'Pending Confirm') {
+								$bg_color = 'bg-success';
+							} else {
+								$bg_color = 'bg-default';
+							}
+							?>
+							<tr class="{{$bg_color}}">
 								<td class="text-center">
 									{{ $loop->iteration }}
 								</td>
@@ -124,56 +136,36 @@
 									{{ $p->recipient_phone }}
 
 								</td>
-								<?php
-								$status = \App\Models\IdexpressStatus::where('operationType', $p->operationType)->first();
-								$class = $status->class ?? '';
-								$note = $status->note ?? '-';
-								?>
-
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
 								<td class="text-center">
-									<div class="dropdown">					
-										<?php
-											$text_color = 'text-dark';
-											if($p->crm_monitor == 'Pending'){
-												$text_color = 'text-warning';
-											}elseif($p->crm_monitor == 'Clear'){
-												$text_color = 'text-dark';
-											}elseif($p->crm_monitor == 'Gagal'){
-												$text_color = 'text-dark';
-											}elseif($p->crm_monitor == 'Problem On Shipment'){
-												$text_color = 'text-danger';
-											}elseif($p->crm_monitor == 'Pending Confirm'){
-												$text_color = 'text-success';
-											}
-											?>											
-										<select name="status" id="status" data-id="{{$p->id}}" class="form-control {{ $text_color }}">
-											<option class="text-warning" value="Pending" {{ ($p->crm_monitor=='Pending') ? 'selected' : ''}}>Pending</option>
-											<option class="text-dark" value="Clear">Clear</option>
-											<option class="text-dark" value="Gagal">Gagal</option>
-											<option class="text-danger" value="Problem On Shipment" {{ ($p->crm_monitor=='Problem On Shipment') ? 'selected' : ''}}>Problem On Shipment</option>
-											<option class="text-success" value="Pending Confirm" {{ ($p->crm_monitor=='Pending Confirm') ? 'selected' : ''}}>Pending Confirm</option>
+									<div class="dropdown">
+
+										<select name="status" id="status" data-id="{{$p->id}}" class="form-control crm_monitor">
+											<option value="Pending" {{ ($p->crm_monitor=='Pending') ? 'selected' : ''}}>Pending</option>
+											<option value="Clear">Clear</option>
+											<option value="Gagal">Gagal</option>
+											<option value="Problem On Shipment" {{ ($p->crm_monitor=='Problem On Shipment') ? 'selected' : ''}}>Problem On Shipment</option>
+											<option value="Pending Confirm" {{ ($p->crm_monitor=='Pending Confirm') ? 'selected' : ''}}>Pending Confirm</option>
 										</select>
 									</div>
 								</td>
-								<td class="text-center"><span class="badge {{ $class }}">{{ $note }}</span></td>
-								<td>
+								<td class="text-center">{{ $p->problem_paket }}</td>
+								<td class="text-center">{{ $p->checker }}</td>
+								<td class="text-center">
 									<?php
-									$overdue = $p->overdue . ' Hari'; // . ' Hari ' . $hours . ' Jam ';
-									$class_overdue = $p->overdue > 3 ? 'text-warning' : ($p->overdue > 7 ? 'text-danger' : '');
+									$images = explode(',', $p->img_url);
 									?>
-									<span class="{{ $class_overdue }}">{{ $overdue }}</span>
+									@foreach ($images as $img)
+									@if ($img)
+									<a href="{{$img}}" target="_blank">
+										<i class="fa fa-file-image" aria-hidden="true"></i>
+									</a>
+									@endif
+									@endforeach
 								</td>
-								<!-- <td>{{ $p->batch_id }} <br> {{ $p->order_no }}</td> -->
 								<td>
-									{{ $p->destination }}
+									<a href="{{url('/crm-monitor/update/'.$p->id)}}" class="btn btn-info btn-sm">Edit</a>
 								</td>
-
-								<td>
-									Start Time : {{ $p->pick_up_start_time ? Date('d/m/y H:i',strtotime($p->pick_up_start_time)) : '' }} <br>
-									End Time : {{ $p->pick_up_end_time ? Date('d/m/y H:i',strtotime($p->pick_up_end_time)) : ''}} <br>
-								</td>
-								<td>{{$p->rp_cod}}</td>
 							</tr>
 							@endforeach
 						</tbody>
@@ -190,12 +182,19 @@
 </div>
 @endsection
 
+@section('css')
+<style>
+	.bg-ping {
+		background-color: pink;
+	}
+</style>
+@endsection
 @section('js')
 <script>
-	$('#status').on('change', function() {
+	$('.crm_monitor').on('change', function() {
 		console.log($(this).attr("data-id"));
 		Swal.fire({
-			title: 'Apakah anda yakin merubah status ke <b></b>'+this.value+'</b> ?',
+			title: 'Apakah anda yakin merubah status ke <b></b>' + this.value + '</b> ?',
 			// showDenyButton: true,
 			showCancelButton: true,
 			confirmButtonText: 'Ya',
@@ -204,17 +203,17 @@
 			/* Read more about isConfirmed, isDenied below */
 			if (result.isConfirmed) {
 				$.ajax({
-					'url':'crm-monitor?id='+$(this).attr("data-id")+'&status='+this.value,
-					success:function(data){
+					'url': 'crm-monitor?id=' + $(this).attr("data-id") + '&status=' + this.value,
+					success: function(data) {
 						console.log(data);
-						if(data.reload){
+						if (data.reload) {
 							location.reload();
 						}
 						Swal.fire('Saved!', '', 'success')
 					}
 				})
-				
-			} 
+
+			}
 		})
 	});
 </script>
