@@ -97,8 +97,12 @@
 					</div>
 					<div class="col-auto">
 						<a href="{{ url('paket/upload') }}" class="btn-right btn btn-sm btn-outline-primary">
+							<i class="fa fa-upload"></i>
 							Upload Resi
 						</a>
+						<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteall" onclick="showModalDelete()">
+							<i class="fa fa-trash"></i> Hapus Semua
+						</button>
 					</div>
 				</div>
 			</div>
@@ -132,7 +136,7 @@
 								<!-- <th class="text-center">Batch Order</th> -->
 								<th class="text-center">Destination</th>
 								<th class="text-center">Pick Up</th>
-								<th class="text-center">Rp COD</th>
+								<th class="text-center">Nilai COD</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -153,7 +157,7 @@
 								$class = $status->class ?? '';
 								$note = $status->note ?? '-';
 								?>
-								
+
 								<td>{!! wordwrap($p->waybill_status,25,"<br>\n") !!}</td>
 								<td class="text-center">
 									@if($p->returnFlag == 1)
@@ -171,7 +175,7 @@
 											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=crm_monitoring"><i class="fas fa-share me-2"></i>Masukan CRM Monitoring</a>
 											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=rts"><i class="fas fa-share me-2"></i>Pindahkan Ke RTS</a>
 											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=terkirim"><i class="fas fa-share me-2"></i>Pindahkan Ke Terkirim</a>
-											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=claim"><i class="fas fa-share me-2"></i>Pindahkan Ke Barang Hilang</a>											
+											<a class="dropdown-item" href="{{ url('paket/update') }}/{{ $p->id }}?v=claim"><i class="fas fa-share me-2"></i>Pindahkan Ke Barang Hilang</a>
 											<a class="dropdown-item" onclick="return confirm('Are you sure?')" href="{{ url('paket/delete') }}/{{ $p->id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
 										</div>
 									</div>
@@ -192,7 +196,7 @@
 									Start Time : {{ $p->pick_up_start_time ? Date('d/m/y H:i',strtotime($p->pick_up_start_time)) : '' }} <br>
 									End Time : {{ $p->pick_up_end_time ? Date('d/m/y H:i',strtotime($p->pick_up_end_time)) : ''}} <br>
 								</td>
-								<td>{{$p->rp_cod}}</td>
+								<td class="text-right">{{$p->rp_cod}}</td>
 							</tr>
 							@endforeach
 						</tbody>
@@ -207,8 +211,55 @@
 </div>
 
 </div>
+
+<div class="modal fade" id="deleteall" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="deleteall" aria-hidden="true">
+	<div class="modal-dialog">
+		<form action="{{url('/paket/delete-all')}}" method="post">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteallLabel">Hapus Data Paket</h5>
+				</div>
+				<div class="modal-body">
+					@csrf
+					<div class="row ${1| ,row-cols-2,row-cols-3, auto,justify-content-md-center,|}">
+						<div class="col-12">
+							<label for="status">status</label>
+							<select name="status" id="status" class="form-control">
+								<option value="">Pilih Status</option>
+								<option value="all">All</option>
+								<option value="terkirim">Delivered</option>
+								<option value="gagal">Gagal Kirim</option>
+								<option value="rts">RTS</option>								
+								<option value="claim">Claim</option>
+								<option value="invalid">Tidak Valid</option>
+								<option value="pending_cek">Pending Cek</option>
+							</select>
+						</div>
+						<div class="col-12">
+							<label for="tanggal">Dari Tanggal</label>
+							<input type="text" name="tanggal" id="tanggal" class="form-control datetimepicker" data-date-format="YYYY-MM-DD">
+						</div>
+						<div class="col-12">
+							<label for="tanggal2">Sampai Tanggal</label>
+							<input type="text" name="tanggal2" id="tanggal2" class="form-control datetimepicker" data-date-format="YYYY-MM-DD">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
 @endsection
 
 @section('js')
-
+<script>
+	function showModalDelete() {
+		$('#deleteall').modal('show');
+	}
+</script>
 @endsection

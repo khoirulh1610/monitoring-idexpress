@@ -186,7 +186,32 @@ class PaketController extends Controller
 
     public function deleteAll(Request $request)
     {
-        $paket = Paket::truncate();
+        $query = "";
+        if($request->status=='invalid'){
+            $query .= "status = 'TIDAK VALID'";
+        }
+        if($request->status=='pending_cek'){
+            $query .= "isnull(last_cek_at)";
+        }
+        if($request->status=='rts'){
+            $query .= " returnFlag = 1";
+        }
+        if($request->status=='claim'){
+            $query .= " not isnull(claim)";
+        }
+        if($request->status=='terkirim'){
+            $query .= " operationType = 10";
+        }
+        if($request->status=='gagal'){
+            $query .= " operationType in (18,19)";
+        }
+        if($request->status=='all'){
+            $query .= " 1=1";
+        }
+        if($request->tanggal && $request->tanggal2){
+            $query .= " and pick_up_start_time between '".$request->tanggal."' and '".$request->tanggal2."'";
+        }
+        DB::statement("delete from pakets where ".$query);
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
