@@ -29,7 +29,7 @@ class PaketController extends Controller
         }
         if ($request->filter_status == 'Delivered') {
             // $paket->where('operationType','10');
-            $qpaket .= " and operationType = '10'";
+            $qpaket .= " and operationType = '10' and returnFlag<>1";
         }
         if ($request->filter_status == 'Dalam Proses') {
             // $paket->whereIn('operationType',['00','04','05','09']);
@@ -37,7 +37,7 @@ class PaketController extends Controller
         }
         if ($request->filter_status == 'Gagal Kirim') {
             // $paket->whereIn('operationType',['18','19']);
-            $qpaket .= " and operationType in ('18','19')";
+            $qpaket .= " and operationType in ('18','19') and returnFlag<>1";
         }
         if ($request->filter_status == 'Dalam Proses Lebih Dari 3 Hari') {
             // $paket->whereIn('operationType',['00','04','05','09'])->where('overdue','>',3);
