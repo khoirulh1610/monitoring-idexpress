@@ -131,7 +131,7 @@ class idexpress_resi extends Command
                                 'overdue'=>$overdue,
                                 'podFlag'=>$podFlag,
                                 'problemFlag'=>$problemFlag,
-                                'returnFlag'=>$returnFlag,
+                                'returnFlag'=>$returnFlag ?? ($up['operationType']=='19' ? 1 : 0),
                                 'voidFlag'=>$voidFlag,
                                 'pickupFlag'=>$pickupFlag,
                                 'problemCode'=>$problemCode,
