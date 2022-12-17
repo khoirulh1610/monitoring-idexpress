@@ -135,6 +135,7 @@ class idexpress_resi extends Command
                                 'voidFlag'=>$voidFlag,
                                 'pickupFlag'=>$pickupFlag,
                                 'problemCode'=>$problemCode,
+                                'manual_status'=> $up['operationType']=='19' ? 'Pindah RTS dari operationType:19' : null,
                                 'claim'=> ($problemCode=='3013') ? 'Y' : null,
                                 'last_cek_at'=>Date('Y-m-d H:i:s')
                             ];
