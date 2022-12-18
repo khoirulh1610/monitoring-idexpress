@@ -13,11 +13,10 @@
 						<div class="dash-count">
 							<div class="dash-title">Delivered</div>
 							<div class="dash-counts">
-								<p>{{ number_format($delivered ?? 0) }}</p>
+								<p >{{ number_format($delivered ?? 0) }} | {{number_format($delivered/$all*100,2)}}%</p>
 							</div>
 						</div>						
-					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($delivered/$all*100,2)}}%</span></p>
+					</div>					
 				</a>
 			</div>
 		</div>
@@ -33,11 +32,11 @@
 						<div class="dash-count">
 							<div class="dash-title">Dalam Proses</div>
 							<div class="dash-counts">
-								<p>{{ number_format($onprocess ?? 0) }}</p>
+								<p>{{ number_format($onprocess ?? 0) }} | {{number_format($onprocess/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($onprocess/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
@@ -53,11 +52,11 @@
 						<div class="dash-count">
 							<div class="dash-title">Gagal Kirim</div>
 							<div class="dash-counts">
-								<p>{{ number_format($gagal ?? 0) }}</p>
+								<p>{{ number_format($gagal ?? 0) }} | {{number_format($gagal/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($gagal/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
@@ -74,11 +73,11 @@
 						<div class="dash-count">
 							<div class="dash-title">Proses 3D+</div>
 							<div class="dash-counts">
-								<p>{{ number_format($plus3 ?? 0) }}</p>
+								<p>{{ number_format($plus3 ?? 0) }} | {{number_format($plus3/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($plus3/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
@@ -95,11 +94,11 @@
 						<div class="dash-count">
 							<div class="dash-title">Proses 7D+</div>
 							<div class="dash-counts">
-								<p>{{ number_format($plus7 ?? 0) }}</p>
+								<p>{{ number_format($plus7 ?? 0) }} | {{number_format($plus7/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($plus7/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
@@ -116,11 +115,11 @@
 						<div class="dash-count">
 							<div class="dash-title">RTS</div>
 							<div class="dash-counts">
-								<p>{{ number_format($rts ?? 0) }}</p>
+								<p>{{ number_format($rts ?? 0) }} | {{number_format($rts/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($rts/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
@@ -137,11 +136,11 @@
 						<div class="dash-count">
 							<div class="dash-title">Pending CEK</div>
 							<div class="dash-counts">
-								<p>{{ number_format($belum_proses ?? 0) }}</p>
+								<p>{{ number_format($belum_proses ?? 0) }} | {{number_format($belum_proses/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($belum_proses/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
@@ -157,11 +156,11 @@
 						<div class="dash-count">
 							<div class="dash-title">Tidak Valid</div>
 							<div class="dash-counts">
-								<p>{{ number_format($tidak_valid ?? 0) }}</p>
+								<p>{{ number_format($tidak_valid ?? 0) }} | {{number_format($tidak_valid/$all*100,2)}}%</p>
 							</div>
 						</div>
 					</div>
-					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($tidak_valid/$all*100,2)}}%</span></p>
+					
 				</a>
 			</div>
 		</div>
