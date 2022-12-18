@@ -19,6 +19,7 @@ class DashboardController extends Controller
         $tidak_valid = Paket::whereIn('operationType',['xx'])->count();
         $belum_proses = Paket::whereNull('operationType')->count();
         $rts = Paket::where('returnFlag',1)->count();
-        return view('dashboard', compact('delivered', 'onprocess', 'gagal','paket','plus3','plus7','belum_proses','tidak_valid','rts'));
+        $all = Paket::count();
+        return view('dashboard', compact('delivered', 'onprocess', 'gagal','paket','plus3','plus7','belum_proses','tidak_valid','rts','all'));
     }
 }

@@ -15,8 +15,9 @@
 							<div class="dash-counts">
 								<p>{{ number_format($delivered ?? 0) }}</p>
 							</div>
-						</div>
+						</div>						
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($delivered/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -36,6 +37,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($onprocess/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -55,6 +57,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($gagal/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -75,6 +78,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($plus3/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -95,6 +99,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($plus7/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -115,6 +120,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($rts/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -135,6 +141,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($belum_proses/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
@@ -154,6 +161,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="text-muted mt-3 mb-0"><span class="text-danger me-1">{{number_format($tidak_valid/$all*100,2)}}%</span></p>
 				</a>
 			</div>
 		</div>
