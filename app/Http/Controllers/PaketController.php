@@ -270,7 +270,7 @@ class PaketController extends Controller
             return response()->json(['success'=>'Status change successfully.','reload' => $reload]);
         }
         $title = 'CRM Monitoring';
-        $paket = Paket::whereNotNull('crm_monitor')->paginate(10);        
+        $paket = Paket::whereNotNull('crm_monitor')->paginate(10);                
         return view('paket.monitor', compact('paket', 'title'));
     }
 

@@ -10,6 +10,7 @@
 					<li class="breadcrumb-item"><a href="/claim">Paket</a></li>
 					<li class="breadcrumb-item active">Detail</li>
 				</ul>
+				<span>{{ number_format($paket->total()) }} Data Datam Pantauan</span>
 			</div>
 			<div class="col-auto">
 				<!-- <a href="add-expenses.html" class="btn btn-primary">

@@ -142,6 +142,9 @@ class idexpress_resi extends Command
                             if ($up['operationType'] == '10') {
                                 $data_update['pick_up_end_time'] = $up['operationTime'];                               
                             } 
+                            if ($up['operationType'] == '19' || $returnFlag==1) {
+                                $data_update['crm_monitor'] = null;                               
+                            }
                             Paket::where('id', $cek_paket->id)->update($data_update);
                             //  kirim notifikasi berdasarkan status                                   
                             try {
