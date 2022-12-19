@@ -106,7 +106,8 @@ Route::middleware(['auth'])->group(function () {
                     $fsresi = $data2[$rs];
                     $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
                     if($cek_paket){
-                        if($cek_paket->operationType!=$up['operationType']){
+                        echo "===========================================>paket ketemu ===>".$up['waybillNo']."<br>";
+                        if($cek_paket->operationType!=$up['operationType'] || $up['operationType']=='10'){
                             $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
                             if(!$status){
                                 Wa::send(1,['phone'=>'6285232843165','message'=>'Status tidak ditemukan '.$up['operationType'].' Pada Resi : '.$dd['waybillNo']]);
@@ -141,6 +142,7 @@ Route::middleware(['auth'])->group(function () {
                                 'claim'=> ($problemCode=='3013') ? 'Y' : null,
                                 'last_cek_at'=>Date('Y-m-d H:i:s')
                             ];
+                            print_r($data_update);
                             if ($up['operationType'] == '10' || $podFlag==1) {
                                 $data_update['pick_up_end_time'] = $up['operationTime'];                               
                                 $data_update['crm_monitor'] = null;                               
