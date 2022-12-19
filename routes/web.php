@@ -78,14 +78,15 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('update-crm',function (){
-        $resi = Paket::whereNotNull('crm_monitor')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(1))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
-        echo (count($resi)."==>".Carbon::now()->subMinute(10));
+        $take = request()->take || 10;
+        $resi = Paket::whereNotNull('crm_monitor')->take($take)->where('last_cek_at','<=',Carbon::now()->subMinute(1))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
+        echo (count($resi)."==>".Carbon::now()->subMinute(10))."<br>";
         if(count($resi)==0){
             return false;
         }
         $all_Resi = implode(",",$resi);        
         $cek = Tracking::idexpress($all_Resi);
-        $this->info("https://rest.idexpress.com/retail/waybill-scan-lines/search-track-batch?waybillNo=".$all_Resi);        
+        echo ("https://rest.idexpress.com/retail/waybill-scan-lines/search-track-batch?waybillNo=".$all_Resi)."<br>";        
         if ($cek['total'] > 0) {
             $temp_notif = Notifikasi::where('name', 'update-status')->first();
             $data = $cek['data'];
@@ -97,9 +98,9 @@ Route::middleware(['auth'])->group(function () {
                 $pickupFlag = $dd['pickupFlag'];
                 $data2 = $dd['scanLineVOS'];
                 $rs = count($dd['scanLineVOS'])-1;
-                $this->info($rs);
+                echo ($rs)."<br>";
                 if($data2){
-                    $this->info($dd['waybillNo'].'=>'.json_encode($data2[0])."\n");
+                    echo ($dd['waybillNo'].'=>'.json_encode($data2[0])."<br>");
                     $up = $data2[0];    
                     $fsresi = $data2[$rs];
                     $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
@@ -169,13 +170,13 @@ Route::middleware(['auth'])->group(function () {
                     }
                     
                 }else{
-                    $this->info('Belum Data '.$dd['waybillNo']."\n");
+                   echo ('Belum Data '.$dd['waybillNo']."<br>");
                     Paket::where('waybill_no',$dd['waybillNo'])->update(['status'=>'TIDAK VALID','operationType'=>'xx','last_cek_at'=>Date('Y-m-d H:i:s')]);
                 }
                 
             }
         }
-        self::handle();
+        // self::handle();
     });
 
     Route::get('telat',function (){
