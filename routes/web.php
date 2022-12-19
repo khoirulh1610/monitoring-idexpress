@@ -71,6 +71,11 @@ Route::middleware(['auth'])->group(function () {
         echo "ok";
     });
 
+    Route::get('update-crm',function (){
+        Artisan::call('update:crm');
+        echo "ok";
+    });
+
     Route::get('telat',function (){
         Artisan::call('telat 7');
         echo "ok";
