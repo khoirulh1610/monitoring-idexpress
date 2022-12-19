@@ -78,7 +78,7 @@ class idexpress_resi extends Command
     }
     
     function proses(){
-        $resi = Paket::where('operationType', '<>', '10')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(5))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
+        $resi = Paket::where('podFlag', '<>', 1)->where('returnFlag', '<>', 1)->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(5))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
         $this->info(count($resi)."==>".Carbon::now()->subMinute(10));
         if(count($resi)==0){
             return false;
@@ -104,8 +104,7 @@ class idexpress_resi extends Command
                     $fsresi = $data2[$rs];
                     $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
                     if($cek_paket){
-                        if($cek_paket->operationType!=$up['operationType'] || $up['operationType']=='10'){
-                            $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
+                        $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
                             if(!$status){
                                 Wa::send(1,['phone'=>'6285232843165','message'=>'Status tidak ditemukan '.$up['operationType'].' Pada Resi : '.$dd['waybillNo']]);
                                 return false;
@@ -149,7 +148,7 @@ class idexpress_resi extends Command
                             //  kirim notifikasi berdasarkan status                                   
                             try {
                                 $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
-                                if($cek_paket && $status->kirim_wa==1 && $problemFlag==0){
+                                if($cek_paket && $status->kirim_wa==1 && $problemFlag==0 && $cek_paket->operationType!=$up['operationType']){
                                     $notif = new Message();                                
                                     $notif->phone = $cek_paket->recipient_phone;
                                     $notif->message = Wa::ReplaceArray($cek_paket,$temp_notif->copywriting);
@@ -162,9 +161,6 @@ class idexpress_resi extends Command
                             } catch (\Throwable $th) {
                                 Log::error($th->getMessage());
                             }
-                        }else{
-                            Paket::where('waybill_no',$dd['waybillNo'])->update(['last_cek_at'=>Date('Y-m-d H:i:s')]);
-                        }
                     }
                     
                 }else{

@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('wa:status')->everyFiveMinutes();
         $schedule->command('message:send')->everyTwoMinutes();
         $schedule->command('recek')->everyTwoHours();
+        
         // $schedule->call(function () {
         //     Artisan::call('message:send');            
         //  })->name('send_message')->withoutOverlapping()->everyThreeMinutes();
