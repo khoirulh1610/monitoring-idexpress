@@ -79,8 +79,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('update-crm',function (){
         $take = request()->take || 10;
-        $resi = Paket::whereNotNull('crm_monitor')->take($take)->where('last_cek_at','<=',Carbon::now()->subMinute(1))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
+        $resi = Paket::whereNotNull('crm_monitor')->pluck('waybill_no')->toArray();
         echo (count($resi)."==>".Carbon::now()->subMinute(10))."<br>";
+        print_r($resi);
         if(count($resi)==0){
             return false;
         }
