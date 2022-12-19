@@ -45,7 +45,7 @@ class crm_update extends Command
      */
     public function handle()
     {
-        $resi = Paket::whereNotNull('crm_monitor')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(5))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
+        $resi = Paket::whereNotNull('crm_monitor')->take(10)->where('last_cek_at','<=',Carbon::now()->subMinute(1))->orwhereNull('last_cek_at')->pluck('waybill_no')->toArray();
         $this->info(count($resi)."==>".Carbon::now()->subMinute(10));
         if(count($resi)==0){
             return false;
@@ -106,8 +106,9 @@ class crm_update extends Command
                                 'claim'=> ($problemCode=='3013') ? 'Y' : null,
                                 'last_cek_at'=>Date('Y-m-d H:i:s')
                             ];
-                            if ($up['operationType'] == '10') {
+                            if ($up['operationType'] == '10' || $podFlag==1) {
                                 $data_update['pick_up_end_time'] = $up['operationTime'];                               
+                                $data_update['crm_monitor'] = null;                               
                             } 
                             if ($up['operationType'] == '19' || $returnFlag==1 || $podFlag==1 ) {
                                 $data_update['crm_monitor'] = null;                               
