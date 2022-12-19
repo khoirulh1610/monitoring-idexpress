@@ -104,7 +104,7 @@ class idexpress_resi extends Command
                     $fsresi = $data2[$rs];
                     $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
                     if($cek_paket){
-                        if($cek_paket->operationType!=$up['operationType']){
+                        if($cek_paket->operationType!=$up['operationType'] || $up['operationType']=='10'){
                             $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
                             if(!$status){
                                 Wa::send(1,['phone'=>'6285232843165','message'=>'Status tidak ditemukan '.$up['operationType'].' Pada Resi : '.$dd['waybillNo']]);
