@@ -84,7 +84,7 @@ class PaketController extends Controller
                 } catch (\Throwable $th) {
                     //throw $th;
                 }
-                return view('pakets.show', compact('paket', 'data'));
+                return view('paket.show', compact('paket', 'data'));
             } else {
                 $paket->waybill_status = 'TIDAK VALID';
                 $paket->operationType = 'xx';
