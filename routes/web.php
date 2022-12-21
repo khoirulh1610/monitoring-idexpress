@@ -106,9 +106,7 @@ Route::middleware(['auth'])->group(function () {
                     $fsresi = $data2[$rs];
                     $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
                     if($cek_paket){
-                        echo "===========================================>paket ketemu ===>".$up['waybillNo']."<br>";
-                        if($cek_paket->operationType!=$up['operationType'] || $up['operationType']=='10'){
-                            $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
+                        $status = IdexpressStatus::where('operationType',$up['operationType'])->first();
                             if(!$status){
                                 Wa::send(1,['phone'=>'6285232843165','message'=>'Status tidak ditemukan '.$up['operationType'].' Pada Resi : '.$dd['waybillNo']]);
                                 return false;
@@ -151,25 +149,6 @@ Route::middleware(['auth'])->group(function () {
                                 $data_update['crm_monitor'] = null;                               
                             }
                             Paket::where('id', $cek_paket->id)->update($data_update);
-                            //  kirim notifikasi berdasarkan status                                   
-                            try {
-                                $cek_paket = Paket::where('waybill_no',$up['waybillNo'])->first();                    
-                                if($cek_paket && $status->kirim_wa==1 && $problemFlag==0){
-                                    $notif = new Message();                                
-                                    $notif->phone = $cek_paket->recipient_phone;
-                                    $notif->message = Wa::ReplaceArray($cek_paket,$temp_notif->copywriting);
-                                    $notif->waybill_no = $cek_paket->waybill_no;
-                                    $notif->operationType = $up['operationType'];
-                                    $notif->status = 0;
-                                    $notif->delay = rand($temp_notif->delay_min ?? 1,$temp_notif->delay_max?? 10);
-                                    $notif->save();
-                                }                                
-                            } catch (\Throwable $th) {
-                                echo $th->getMessage();
-                            }
-                        }else{
-                            Paket::where('waybill_no',$dd['waybillNo'])->update(['last_cek_at'=>Date('Y-m-d H:i:s')]);
-                        }
                     }
                     
                 }else{
